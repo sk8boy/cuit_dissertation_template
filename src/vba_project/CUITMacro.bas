@@ -214,9 +214,6 @@ Public Sub InsertPicNo_RibbonFun(ByVal control As IRibbonControl)
     Dim chapNum As Integer
     Dim ur  As UndoRecord
 
-'    mathTypeFound = False
-'    axMathFound = True
-
     On Error GoTo ERROR_HANDLER
     Set ur = Application.UndoRecord
     ur.StartCustomRecord "插入图编号"
@@ -276,34 +273,376 @@ ERROR_HANDLER:
     If Not (ur Is Nothing) Then ur.EndCustomRecord
 End Sub
 
-' 插入对图编号的交叉引用，未使用
-Sub InsertFigureCrossReference()
-    Dim rng As Range
-    Dim figRef As String
+Public Sub InsertDefNo_RibbonFun(ByVal control As IRibbonControl)
+    Dim aField As Field, bField As Field
+    Dim aRange As Range
+    Dim currentRange As Range
     Dim chapNum As Integer
+    Dim ur  As UndoRecord
 
-    ' 获取当前章编号
-    chapNum = GetSEQValue("CUITChap")
-    If chapNum = 0 Then
-        MsgBox "请先插入章编号！", vbExclamation, C_TITLE
-        Exit Sub
-    End If
-
-    ' 构建引用文本（章编号-图编号）
-    figRef = chapNum & "-" & GetSEQValue("Figure")
-
-    Set rng = Selection.Range
-
-    ' 插入交叉引用
-    rng.text = "如图" & figRef & "所示"
-
-    ' 或者使用Word内置的交叉引用功能（更规范）
-    ' ActiveDocument.Hyperlinks.Add Anchor:=rng, _
-    '    Address:="", SubAddress:="图" & figRef, _
-    '    TextToDisplay:="如图" & figRef & "所示"
-
-    ' 更新字段
+    On Error GoTo ERROR_HANDLER
+    Set ur = Application.UndoRecord
+    ur.StartCustomRecord "插入定义编号"
+    With ActiveDocument
+        ' 获取当前章编号
+        Selection.TypeText "定义"
+        Set currentRange = Selection.Range
+        Set aField = currentRange.Fields.Add(currentRange, wdFieldEmpty, "SEQ 定义 \* ARABIC \s 1", False)
+        Set aRange = .Range(currentRange.End, currentRange.End)
+        aRange.text = "-"
+        Set bField = aRange.Fields.Add(currentRange, wdFieldEmpty, "QUOTE ""一九一一年一月日"" \@""D""", False)
+        Set aRange = .Range(bField.Code.End - 9, bField.Code.End - 9)
+        Set bField = aRange.Fields.Add(aRange, wdFieldEmpty, "STYLEREF ""论文标题1"" \s", False)
+    End With
+    Selection.TypeText "："
+    currentPos = Selection.Range.Star
+    If Not ApplyParaStyle("论文定义", 0, False) Then Err.Raise ERR_CANCEL
     ActiveDocument.Fields.Update
+    ActiveDocument.Fields.ToggleShowCodes
+    paraStart = Selection.Paragraphs(1).Range.Start
+    Set aRange = ActiveDocument.Range(Start:=paraStart, End:=currentPos)
+    aRange.Font.Bold = True
+    aRange.Font.NameFarEast = "黑体"
+    aRange.Font.NameAscii = "Times New Roman"
+    
+    Application.ScreenRefresh
+    ur.EndCustomRecord
+    Exit Sub  ' 正常退出点，避免进入错误处理程序
+
+ERROR_HANDLER:
+    MsgBox "发生错误: " & vbCrLf & vbCrLf & Err.Description, vbCritical, C_TITLE
+    If Not (ur Is Nothing) Then ur.EndCustomRecord
+End Sub
+
+Public Sub InsertTheoremNo_RibbonFun(ByVal control As IRibbonControl)
+    Dim aField As Field, bField As Field
+    Dim aRange As Range
+    Dim currentRange As Range
+    Dim chapNum As Integer
+    Dim ur  As UndoRecord
+    Dim paraStart As Long
+    Dim currentPos As Long
+
+    On Error GoTo ERROR_HANDLER
+    Set ur = Application.UndoRecord
+    ur.StartCustomRecord "插入定理编号"
+    With ActiveDocument
+        ' 获取当前章编号
+        Selection.TypeText "定理"
+        Set currentRange = Selection.Range
+        Set aField = currentRange.Fields.Add(currentRange, wdFieldEmpty, "SEQ 定理 \* ARABIC \s 1", False)
+        Set aRange = .Range(currentRange.End, currentRange.End)
+        aRange.text = "-"
+        Set bField = aRange.Fields.Add(currentRange, wdFieldEmpty, "QUOTE ""一九一一年一月日"" \@""D""", False)
+        Set aRange = .Range(bField.Code.End - 9, bField.Code.End - 9)
+        Set bField = aRange.Fields.Add(aRange, wdFieldEmpty, "STYLEREF ""论文标题1"" \s", False)
+    End With
+    Selection.TypeText "："
+    currentPos = Selection.Range.Start
+    If Not ApplyParaStyle("论文定义", 0, False) Then Err.Raise ERR_CANCEL
+    ActiveDocument.Fields.Update
+    ActiveDocument.Fields.ToggleShowCodes
+    paraStart = Selection.Paragraphs(1).Range.Start
+    Set aRange = ActiveDocument.Range(Start:=paraStart, End:=currentPos)
+    aRange.Font.Bold = True
+    aRange.Font.NameFarEast = "黑体"
+    aRange.Font.NameAscii = "Times New Roman"
+    
+    Application.ScreenRefresh
+    ur.EndCustomRecord
+    Exit Sub  ' 正常退出点，避免进入错误处理程序
+
+ERROR_HANDLER:
+    MsgBox "发生错误: " & vbCrLf & vbCrLf & Err.Description, vbCritical, C_TITLE
+    If Not (ur Is Nothing) Then ur.EndCustomRecord
+End Sub
+
+Public Sub InsertCorollaryNo_RibbonFun()
+    Dim aField As Field, bField As Field
+    Dim aRange As Range
+    Dim currentRange As Range
+    Dim chapNum As Integer
+    Dim ur  As UndoRecord
+    Dim paraStart As Long
+    Dim currentPos As Long
+
+    On Error GoTo ERROR_HANDLER
+    Set ur = Application.UndoRecord
+    ur.StartCustomRecord "插入推论编号"
+    With ActiveDocument
+        ' 获取当前章编号
+        Selection.TypeText "推论"
+        Set currentRange = Selection.Range
+        Set aField = currentRange.Fields.Add(currentRange, wdFieldEmpty, "SEQ 推论 \* ARABIC \s 1", False)
+        Set aRange = .Range(currentRange.End, currentRange.End)
+        aRange.text = "-"
+        Set bField = aRange.Fields.Add(currentRange, wdFieldEmpty, "QUOTE ""一九一一年一月日"" \@""D""", False)
+        Set aRange = .Range(bField.Code.End - 9, bField.Code.End - 9)
+        Set bField = aRange.Fields.Add(aRange, wdFieldEmpty, "STYLEREF ""论文标题1"" \s", False)
+    End With
+    Selection.TypeText "："
+    currentPos = Selection.Range.Start
+    If Not ApplyParaStyle("论文定义", 0, False) Then Err.Raise ERR_CANCEL
+    ActiveDocument.Fields.Update
+    ActiveDocument.Fields.ToggleShowCodes
+    paraStart = Selection.Paragraphs(1).Range.Start
+    Set aRange = ActiveDocument.Range(Start:=paraStart, End:=currentPos)
+    aRange.Font.Bold = True
+    aRange.Font.NameFarEast = "黑体"
+    aRange.Font.NameAscii = "Times New Roman"
+    
+    Application.ScreenRefresh
+    ur.EndCustomRecord
+    Exit Sub  ' 正常退出点，避免进入错误处理程序
+
+ERROR_HANDLER:
+    MsgBox "发生错误: " & vbCrLf & vbCrLf & Err.Description, vbCritical, C_TITLE
+    If Not (ur Is Nothing) Then ur.EndCustomRecord
+End Sub
+
+Public Sub InsertLemmaNo_RibbonFun(ByVal control As IRibbonControl)
+    Dim aField As Field, bField As Field
+    Dim aRange As Range
+    Dim currentRange As Range
+    Dim chapNum As Integer
+    Dim ur  As UndoRecord
+    Dim paraStart As Long
+    Dim currentPos As Long
+
+    On Error GoTo ERROR_HANDLER
+    Set ur = Application.UndoRecord
+    ur.StartCustomRecord "插入引理编号"
+    With ActiveDocument
+        ' 获取当前章编号
+        Selection.TypeText "引理"
+        Set currentRange = Selection.Range
+        Set aField = currentRange.Fields.Add(currentRange, wdFieldEmpty, "SEQ 引理 \* ARABIC \s 1", False)
+        Set aRange = .Range(currentRange.End, currentRange.End)
+        aRange.text = "-"
+        Set bField = aRange.Fields.Add(currentRange, wdFieldEmpty, "QUOTE ""一九一一年一月日"" \@""D""", False)
+        Set aRange = .Range(bField.Code.End - 9, bField.Code.End - 9)
+        Set bField = aRange.Fields.Add(aRange, wdFieldEmpty, "STYLEREF ""论文标题1"" \s", False)
+    End With
+    Selection.TypeText "："
+    currentPos = Selection.Range.Start
+    If Not ApplyParaStyle("论文定义", 0, False) Then Err.Raise ERR_CANCEL
+    ActiveDocument.Fields.Update
+    ActiveDocument.Fields.ToggleShowCodes
+    paraStart = Selection.Paragraphs(1).Range.Start
+    Set aRange = ActiveDocument.Range(Start:=paraStart, End:=currentPos)
+    aRange.Font.Bold = True
+    aRange.Font.NameFarEast = "黑体"
+    aRange.Font.NameAscii = "Times New Roman"
+    
+    Application.ScreenRefresh
+    ur.EndCustomRecord
+    Exit Sub  ' 正常退出点，避免进入错误处理程序
+
+ERROR_HANDLER:
+    MsgBox "发生错误: " & vbCrLf & vbCrLf & Err.Description, vbCritical, C_TITLE
+    If Not (ur Is Nothing) Then ur.EndCustomRecord
+End Sub
+
+Public Sub InsertProblemNo_RibbonFun(ByVal control As IRibbonControl)
+    Dim aField As Field, bField As Field
+    Dim aRange As Range
+    Dim currentRange As Range
+    Dim chapNum As Integer
+    Dim ur  As UndoRecord
+    Dim paraStart As Long
+    Dim currentPos As Long
+
+    On Error GoTo ERROR_HANDLER
+    Set ur = Application.UndoRecord
+    ur.StartCustomRecord "插入问题编号"
+    With ActiveDocument
+        ' 获取当前章编号
+        Selection.TypeText "问题"
+        Set currentRange = Selection.Range
+        Set aField = currentRange.Fields.Add(currentRange, wdFieldEmpty, "SEQ 问题 \* ARABIC \s 1", False)
+        Set aRange = .Range(currentRange.End, currentRange.End)
+        aRange.text = "-"
+        Set bField = aRange.Fields.Add(currentRange, wdFieldEmpty, "QUOTE ""一九一一年一月日"" \@""D""", False)
+        Set aRange = .Range(bField.Code.End - 9, bField.Code.End - 9)
+        Set bField = aRange.Fields.Add(aRange, wdFieldEmpty, "STYLEREF ""论文标题1"" \s", False)
+    End With
+    Selection.TypeText "："
+    currentPos = Selection.Range.Start
+    If Not ApplyParaStyle("论文定义", 0, False) Then Err.Raise ERR_CANCEL
+    ActiveDocument.Fields.Update
+    ActiveDocument.Fields.ToggleShowCodes
+    paraStart = Selection.Paragraphs(1).Range.Start
+    Set aRange = ActiveDocument.Range(Start:=paraStart, End:=currentPos)
+    aRange.Font.Bold = True
+    aRange.Font.NameFarEast = "黑体"
+    aRange.Font.NameAscii = "Times New Roman"
+    
+    Application.ScreenRefresh
+    ur.EndCustomRecord
+    Exit Sub  ' 正常退出点，避免进入错误处理程序
+
+ERROR_HANDLER:
+    MsgBox "发生错误: " & vbCrLf & vbCrLf & Err.Description, vbCritical, C_TITLE
+    If Not (ur Is Nothing) Then ur.EndCustomRecord
+End Sub
+
+Public Sub InsertConclusionNo_RibbonFun(ByVal control As IRibbonControl)
+    Dim aField As Field, bField As Field
+    Dim aRange As Range
+    Dim currentRange As Range
+    Dim chapNum As Integer
+    Dim ur  As UndoRecord
+    Dim paraStart As Long
+    Dim currentPos As Long
+
+    On Error GoTo ERROR_HANDLER
+    Set ur = Application.UndoRecord
+    ur.StartCustomRecord "插入结论编号"
+    With ActiveDocument
+        ' 获取当前章编号
+        Selection.TypeText "结论"
+        Set currentRange = Selection.Range
+        Set aField = currentRange.Fields.Add(currentRange, wdFieldEmpty, "SEQ 结论 \* ARABIC \s 1", False)
+        Set aRange = .Range(currentRange.End, currentRange.End)
+        aRange.text = "-"
+        Set bField = aRange.Fields.Add(currentRange, wdFieldEmpty, "QUOTE ""一九一一年一月日"" \@""D""", False)
+        Set aRange = .Range(bField.Code.End - 9, bField.Code.End - 9)
+        Set bField = aRange.Fields.Add(aRange, wdFieldEmpty, "STYLEREF ""论文标题1"" \s", False)
+    End With
+    Selection.TypeText "："
+    currentPos = Selection.Range.Start
+    If Not ApplyParaStyle("论文定义", 0, False) Then Err.Raise ERR_CANCEL
+    ActiveDocument.Fields.Update
+    ActiveDocument.Fields.ToggleShowCodes
+    paraStart = Selection.Paragraphs(1).Range.Start
+    Set aRange = ActiveDocument.Range(Start:=paraStart, End:=currentPos)
+    aRange.Font.Bold = True
+    aRange.Font.NameFarEast = "黑体"
+    aRange.Font.NameAscii = "Times New Roman"
+    
+    Application.ScreenRefresh
+    ur.EndCustomRecord
+    Exit Sub  ' 正常退出点，避免进入错误处理程序
+
+ERROR_HANDLER:
+    MsgBox "发生错误: " & vbCrLf & vbCrLf & Err.Description, vbCritical, C_TITLE
+    If Not (ur Is Nothing) Then ur.EndCustomRecord
+End Sub
+
+Public Sub InsertAlgorithmTbl_RibbonFun(ByVal control As IRibbonControl)
+    Dim tbl As Table
+    Dim rng As Range
+    Dim i As Integer
+    Dim ur As UndoRecord
+
+    On Error GoTo ERROR_HANDLER
+    Set ur = Application.UndoRecord
+    ur.StartCustomRecord "插入算法"
+    
+    Set rng = Selection.Range
+    rng.Collapse Direction:=wdCollapseEnd
+    
+    InsertAlgorithmNo
+    
+    Set rng = Selection.Paragraphs(1).Range
+    rng.Collapse Direction:=wdCollapseEnd
+    rng.InsertParagraphAfter
+    
+    ' 插入表格（3行 x 2列）
+    Set tbl = ActiveDocument.Tables.Add(rng, 3, 2)
+    
+    ' 设置表格样式和列宽
+    With tbl
+        ' 表格宽度为100%页面
+        .PreferredWidthType = wdPreferredWidthPercent
+        .PreferredWidth = 100
+        .Columns(1).PreferredWidth = 10
+        .Columns(2).PreferredWidth = 90
+        ' 边框样式
+        .Borders.Enable = True
+        .Borders.InsideLineStyle = wdLineStyleSingle
+        .Borders.OutsideLineStyle = wdLineStyleSingle
+    End With
+    
+    ' 填充表格内容
+    With tbl
+        ' 第一行：输入
+        .Cell(1, 1).Range.Style = "论文表格文字"
+        .Cell(1, 1).Range.text = "输入"
+        .Cell(1, 1).Range.Bold = True
+        .Cell(1, 1).VerticalAlignment = wdCellAlignVerticalCenter
+        .Cell(1, 1).Range.ParagraphFormat.Alignment = wdAlignParagraphCenter
+        .Cell(1, 2).Range.Style = "论文表格文字"
+        
+        ' 第二行：输出
+        .Cell(2, 1).Range.Style = "论文表格文字"
+        .Cell(2, 1).Range.text = "输出"
+        .Cell(2, 1).Range.Bold = True
+        .Cell(2, 1).VerticalAlignment = wdCellAlignVerticalCenter
+        .Cell(2, 1).Range.ParagraphFormat.Alignment = wdAlignParagraphCenter
+        .Cell(2, 2).Range.Style = "论文表格文字"
+        
+        ' 第三行：伪代码
+        .Cell(3, 1).Range.Style = "论文表格文字"
+        .Cell(3, 1).Range.text = "伪代码"
+        .Cell(3, 1).Range.Bold = True
+        .Cell(3, 1).VerticalAlignment = wdCellAlignVerticalCenter
+        .Cell(3, 1).Range.ParagraphFormat.Alignment = wdAlignParagraphCenter
+        .Cell(3, 2).Range.Style = "论文表格文字"
+    End With
+
+    ' 设置字体和缩进（伪代码部分）
+    With tbl.Cell(3, 2).Range
+        .ParagraphFormat.SpaceAfter = 0
+        .ParagraphFormat.FirstLineIndent = 0
+        .ParagraphFormat.LineSpacingRule = wdLineSpaceExactly
+        .ParagraphFormat.LineSpacing = 12
+        .ParagraphFormat.Alignment = wdAlignParagraphLeft
+        .Font.NameFarEast = "宋体"
+        .Font.NameAscii = "Courier New"
+        .Font.Bold = False
+        .Font.Size = 9
+    End With
+    Exit Sub
+ERROR_HANDLER:
+    MsgBox "发生错误: " & vbCrLf & vbCrLf & Err.Description, vbCritical, C_TITLE
+    If Not (ur Is Nothing) Then ur.EndCustomRecord
+End Sub
+
+Private Sub InsertAlgorithmNo()
+    Dim aField As Field, bField As Field
+    Dim aRange As Range
+    Dim currentRange As Range
+    Dim chapNum As Integer
+    Dim ur  As UndoRecord
+    Dim paraStart As Long
+    Dim currentPos As Long
+
+    On Error GoTo ERROR_HANDLER
+    Set ur = Application.UndoRecord
+    ur.StartCustomRecord "插入算法编号"
+    With ActiveDocument
+        ' 获取当前章编号
+        Selection.TypeText "算法"
+        Set currentRange = Selection.Range
+        Set aField = currentRange.Fields.Add(currentRange, wdFieldEmpty, "SEQ 算法 \* ARABIC \s 1", False)
+        Set aRange = .Range(currentRange.End, currentRange.End)
+        aRange.text = "-"
+        Set bField = aRange.Fields.Add(currentRange, wdFieldEmpty, "QUOTE ""一九一一年一月日"" \@""D""", False)
+        Set aRange = .Range(bField.Code.End - 9, bField.Code.End - 9)
+        Set bField = aRange.Fields.Add(aRange, wdFieldEmpty, "STYLEREF ""论文标题1"" \s", False)
+    End With
+    Selection.TypeText " "
+    If Not ApplyParaStyle("论文算法标题", 0, False) Then Err.Raise ERR_CANCEL
+    ActiveDocument.Fields.Update
+    ActiveDocument.Fields.ToggleShowCodes
+    Application.ScreenRefresh
+    ur.EndCustomRecord
+    Exit Sub  ' 正常退出点，避免进入错误处理程序
+
+ERROR_HANDLER:
+    MsgBox "发生错误: " & vbCrLf & vbCrLf & Err.Description, vbCritical, C_TITLE
+    If Not (ur Is Nothing) Then ur.EndCustomRecord
 End Sub
 
 Public Sub ShowInfoDialog_RibbonFun(ByVal control As IRibbonControl)
@@ -1727,7 +2066,8 @@ Function InsertCrossReference_(Optional isActiveState As Variant)
 
     cfgHeadlineAddDefaults = "\h \* MERGEFORMAT "
     cfgBookmarkAddDefaults = "\h \* MERGEFORMAT "
-    cfgFigureTEAddDefaults = "\h \* MERGEFORMAT "
+'    cfgFigureTEAddDefaults = "\h \* MERGEFORMAT "
+    cfgFigureTEAddDefaults = "\h "
     '
     ' Define here the subtitles that shall be recognised. Add more as you wish:
     Const subtitleTypes = "Figure|Fig.|Abbildung|Abb.|Table|Tab.|Tabelle|Equation|Eq.|Gleichung"
@@ -2395,7 +2735,7 @@ Private Function Insert1CrossRef(mode As Integer, Optional param1 As Variant, _
     Dim param0 As Variant
     Dim myCode As String
     Dim idx As Integer
-
+    
     Select Case mode
         Case 0              ' update by manipulating switches
             With ActiveDocument.Fields(param2)
@@ -2488,6 +2828,7 @@ Private Function Insert1CrossRef(mode As Integer, Optional param1 As Variant, _
             ' ===== Insert the cross reference, not all parameters might already be correct:
             '                                  RefType, RefKind, RefIndx, hyperlink,  position     sepNr , seperator
             Call Selection.InsertCrossReference(param1, param0, param2, inclHyperlink, inclPosition, False, "")
+            
             param3 = Replace(param3, "PAGEREF", "")
             param3 = Replace(param3, "REF", "")
 

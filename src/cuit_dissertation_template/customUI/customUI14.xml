@@ -21,6 +21,22 @@
                         imageMso="TableIndexes"
                         supertip="点击插入表格编号"
                         onAction="InsertTblNo_RibbonFun" />
+                    <button id="InsertAlgorithmTbl" label="插入算法" size="large" 
+                        imageMso="PivotTableFieldSettings"
+                        supertip="点击插入算法编号和算法表格"
+                        onAction="InsertAlgorithmTbl_RibbonFun" />
+                    <separator id="separator1"/>
+                    <box id="box1" boxStyle="vertical">
+                       <button id="InsertDefNo" label="定义" imageMso="AddressBook" onAction="InsertDefNo_RibbonFun" supertip="插入定义编号" />
+                       <button id="InsertTheoremNo" label="定理" imageMso="ShapeStar" onAction="InsertTheoremNo_RibbonFun" supertip="插入定理编号" />
+                       <button id="InsertCorollaryNo" label="推论" imageMso="RightArrow2" onAction="InsertCorollaryNo_RibbonFun" supertip="插入推论编号" />
+                    </box>
+                    <box id="box2" boxStyle="vertical">
+                        <button id="InsertLemmaNo" label="引理" imageMso="TipWizardHelp" onAction="InsertLemmaNo_RibbonFun" supertip="插入引理编号" />
+                        <button id="InsertProblemNo" label="问题" imageMso="Help" onAction="InsertProblemNo_RibbonFun" supertip="插入问题编号" />
+                        <button id="InsertConclusionNo" label="结论" imageMso="AdpPrimaryKey" onAction="InsertConclusionNo_RibbonFun" supertip="插入结论编号" />
+                    </box>
+                    <separator id="separator2"/>
                     <button id="InsertCrossReference" label="插入交叉引用" size="large" 
                         imageMso="CrossReferenceInsert"
                         screentip="插入图题/表题引用"
@@ -40,10 +56,10 @@
                     onAction="H5_RibbonFun" screentip="设置选定文本样式为'论文标题5'" />
                     <button id="btnH6" label="论文标题6" imageMso="PivotTableLayoutGrandTotals" size="large" 
                     onAction="H6_RibbonFun" screentip="设置选定文本样式为'论文标题6'" />
-                    <separator id="separator1"/>
+                    <separator id="separator3"/>
                     <button id="Standard" label="论文正文" image="normal" size="large" 
                     onAction="MakeStandard_RibbonFun" screentip="格式化为正文样式" supertip="将选定文本格式化为'论文正文'样式。" />
-                    <button id="Progcode" label="源代码" imageMso="CreateStoredProcedure" size="large" 
+                    <button id="Progcode" label="源代码" imageMso="CodeEdit" size="large" 
                     onAction="MakeProgCode_RibbonFun" screentip="格式化为'论文源代码'样式" />
                 </group>
                 <group id="RestoreTemplate" label="模板" autoScale="true">
