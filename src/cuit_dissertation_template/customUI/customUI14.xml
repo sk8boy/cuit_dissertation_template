@@ -2,7 +2,7 @@
     <ribbon>
         <tabs>
             <tab id="CuitTab" label="毕业论文">
-                <group id="BaseInfo" label="论文信息" autoScale="true">
+                <group id="BaseInfo" label="模版工具" autoScale="true">
                     <button id="UpdateBaseInfo" label="论文基础信息" size="large" 
                         imageMso="Info"
                         supertip="点击更新论文的基础信息"
@@ -11,6 +11,10 @@
                         imageMso="HeaderFooterNumberOfPagesInsert"
                         supertip="点击更新文档中正文页数"
                         onAction="UpdatePages_RibbonFun" />
+                    <button id="RemoveSapces" label="删除多余空格" size="large" 
+                        imageMso="QueryDelete"
+                        supertip="删除中英文字符以及中文字符间的多余空格（不会删除英文间的空格）"
+                        onAction="RemoveSpaces_RibbonFun" />
                 </group>
                 <group id="Number" label="题注相关" autoScale="true">
                     <button id="InsertPicNo" label="插入图编号" size="large" 
@@ -57,12 +61,23 @@
                     <button id="btnH6" label="论文标题6" imageMso="PivotTableLayoutGrandTotals" size="large" 
                     onAction="H6_RibbonFun" screentip="设置选定文本样式为'论文标题6'" />
                     <separator id="separator3"/>
+                    <box id="box3" boxStyle="vertical">
+                       <button id="btnBullet" label="无序列表" image="bulletitem" onAction="MakeBulletItem_RibbonFun" screentip="将所选文字格式化为无序列表" />
+                       <button id="btnNumbered" label="有序列表" image="numitem" onAction="MakeNumItem_RibbonFun" screentip="将所选文字格式化为有序列表" />
+                       <button id="btnNumNoIndent" label="无缩序号" image="dashitem" onAction="MakeNumNoIndentItem_RibbonFun" screentip="在所选段落前加上带括号的序号" />
+                    </box>
+                    <box id="box4" boxStyle="vertical">
+                       <button id="btnListLevelUp" label="提升级别" image="arrowright" onAction="ListLevelUp_RibbonFun" screentip="提升选定文本的列表级别" />
+                       <button id="btnListLevelDown" label="降低级别" image="arrowleft" onAction="ListLevelDown_RibbonFun" screentip="降低选定文本的列表级别" />
+                       <button id="btnToggleNum" label="切换序号" image="togglenumbering" onAction="RestartNumbering_RibbonFun" screentip="在 重新编号 和 继续编号 之间切换" supertip="只能在有序列表上使用" />
+                    </box>
+                    <separator id="separator4"/>
                     <button id="Standard" label="论文正文" image="normal" size="large" 
                     onAction="MakeStandard_RibbonFun" screentip="格式化为正文样式" supertip="将选定文本格式化为'论文正文'样式。" />
                     <button id="Progcode" label="源代码" imageMso="CodeEdit" size="large" 
                     onAction="MakeProgCode_RibbonFun" screentip="格式化为'论文源代码'样式" />
                 </group>
-                <group id="RestoreTemplate" label="模板" autoScale="true">
+                <group id="RestoreTemplate" label="模板相关" autoScale="true">
                     <button id="btnRestTemplate" label="模板检查恢复" imageMso="AccessThemesGallery" size="large" 
                     onAction="RestoreSettings_RibbonFun" screentip="恢复所有样式" supertip="当原始文档中的样式被修改或删除时，通过该功能进行恢复。" />
                     <gallery id="GetLatestVersion_Gallery" size="normal" imageMso="Refresh" label="获取更新">

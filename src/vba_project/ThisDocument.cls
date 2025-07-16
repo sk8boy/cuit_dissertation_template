@@ -15,12 +15,12 @@ Private Sub Document_Open()
 
     On Error Resume Next
     Set ur = Application.UndoRecord
-    ur.StartCustomRecord "æ›´æ–°æ‰€æœ‰åºå·"
+    ur.StartCustomRecord "¸üĞÂËùÓĞĞòºÅ"
     'Update fields
     For Each objField In ActiveDocument.Fields
-        If objField.Type = wdFieldSequence Then
-            objField.Update
-        End If
+       If objField.Type = wdFieldSequence Then
+          objField.Update
+       End If
     Next
     ur.EndCustomRecord
     'If no other change is made (except for updating the fields), allow closing without saving
