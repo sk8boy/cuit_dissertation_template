@@ -15,7 +15,7 @@ Private Sub Document_Open()
 
     On Error Resume Next
     Set ur = Application.UndoRecord
-    ur.StartCustomRecord "¸üĞÂËùÓĞĞòºÅ"
+    ur.StartCustomRecord "æ›´æ–°æ‰€æœ‰åºå·"
     'Update fields
     For Each objField In ActiveDocument.Fields
        If objField.Type = wdFieldSequence Then
@@ -28,4 +28,3 @@ Private Sub Document_Open()
     'Check for standard page setup
     RestorePageSetup
 End Sub
-

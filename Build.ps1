@@ -29,22 +29,6 @@ param (
 
 # # 设置PowerShell默认编码为UTF-8
 # $PSDefaultParameterValues['*:Encoding'] = 'utf8'
-# 初始化 version.txt
-$versionFile = ".\Version.txt"
-if (-not (Test-Path $versionFile)) {
-    Set-Content -Path $versionFile -Value "1.0.0"
-    $newVersion = 1.0.0
-}
-else {
-    $version = Get-Content $versionFile
-    # 拆分版本号（Major.Minor.Patch.Build）
-    $versionParts = $version.Split('.')
-    $buildNumber = [int]$versionParts[2] + 1
-    $newVersion = "$($versionParts[0]).$($versionParts[1]).$buildNumber"
-
-    # 更新 version.txt
-    Set-Content -Path $versionFile -Value $newVersion
-}
 
 # 创建必要的目录
 $null = New-Item -ItemType Directory -Path $OutputPath -Force
@@ -95,16 +79,62 @@ if (Test-Path $customUIPath) {
 }
 
 # 3. 添加 VBA 项目
+
+# 初始化 version.txt
+$versionFile = ".\Version.txt"
+$utf8NoBom = New-Object System.Text.UTF8Encoding $false
+if (-not (Test-Path $versionFile)) {
+    # Set-Content -Path $versionFile -Value "1.0.0"
+    [System.IO.File]::WriteAllText($versionFile, "1.0.0", $utf8NoBom)
+    $newVersion = 1.0.0
+}
+else {
+    $version = (Get-Content $versionFile).Trim()
+    # 拆分版本号（Major.Minor.Patch.Build）
+    $versionParts = $version.Split('.')
+    $buildNumber = [int]$versionParts[2] + 1
+    $newVersion = "$($versionParts[0]).$($versionParts[1]).$buildNumber"
+
+    # 更新 version.txt
+    # Set-Content -Path $versionFile -Value $newVersion
+    [System.IO.File]::WriteAllText($versionFile, $newVersion, $utf8NoBom)
+}
+
 $vbaPath = Join-Path $SourcePath "VBAProject"
 if (Test-Path $vbaPath) {
     Write-Host "添加 VBA 组件..."
 
-    # 创建 word/vbaProject.bin 文件 (需要从 .bas 文件编译)
-    $vbaProjectPath = Join-Path $tempDotmPath "word" | Join-Path -ChildPath "vbaProject.bin"
-    
+    # 3.1 拼接 Python 脚本路径（与 ps1 同目录）
+    $pyScript = Join-Path $PSScriptRoot "makeVBAProjectFile.py"
+
+    if (-not (Test-Path $pyScript)) {
+        Write-Error "未找到配套 Python 脚本：$pyScript"
+        exit 1
+    }
+
+    # 3.2 调用 Python 提取 vbaProject.bin
+    $vbaProjectFile = Join-Path $vbaPath "vbaProject.bin"
+    try {
+        python $pyScript
+        if (Test-Path $vbaProjectFile) {
+            Write-Host "提取成功 -> $vbaProjectFile"
+        }
+        else {
+            Write-Error "提取失败，vbaProject.bin 未生成"
+            exit 1
+        }
+    }
+    catch {
+        Write-Error "Python 执行出错：$_"
+        eixt 1
+    }
+
+   
     # 这里需要调用 VBA 编译器或使用现有的 vbaProject.bin 文件
     # 这是一个简化版本，假设已经有编译好的 vbaProject.bin
-    if (Test-Path (Join-Path $vbaPath "vbaProject.bin")) {
+    if (Test-Path $vbaProjectFile) {
+        # 目标文件会被存储到 dotm 临时目录下 word/vbaProject.bin
+        $vbaProjectPath = Join-Path $tempDotmPath "word" | Join-Path -ChildPath "vbaProject.bin"
         Copy-Item -Path (Join-Path $vbaPath "vbaProject.bin") -Destination $vbaProjectPath -Force
     }
     else {

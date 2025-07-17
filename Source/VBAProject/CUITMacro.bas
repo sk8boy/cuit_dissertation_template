@@ -14,7 +14,7 @@ Public otherTeacherTitle As String
 Public mathTypeFound As Boolean
 Public axMathFound As Boolean
 
-Const Version = "v1.2"
+Const Version = "v1.3.0"
 
 Const TEXT_GithubUrl = "https://github.com/sk8boy/cuit_dissertation_template"
 Const TEXT_GiteeUrl = "https://gitee.com/tiejunwang/cuit_dissertation_template"
@@ -3416,90 +3416,6 @@ Private Function strPrepare(string1 As String, Optional withBlanks As Boolean = 
     
     strPrepare = string1
 End Function
-
-Private Sub test_strPrepare()
-    Dim string0 As String
-    Dim string1 As String
-    Dim p0, p1, p2, p3 As Long
-    Dim s2 As String
-    
-    Dim s3, s4, s5, s6, s7, s8 As String
-    
-    string0 = "" & vbNewLine & _
-        """" & vbNewLine & _
-        """6 round toggle values are defined:" & vbNewLine & _
-        "" & vbNewLine & _
-        """1: number|   ""eol comment" & vbNewLine & _
-        "    R \r  |    ""eol comment" & vbNewLine & _
-        """2: text|" & vbNewLine & _
-        "    REF |" & vbNewLine & _
-        """3: number?°text" & vbNewLine & _
-        "    R \r '??R  |" & vbNewLine & _
-        "    R \r '?|\£¦ - ?'R  |" & vbNewLine & _
-        "    R \r '?|\£\'? - ?'R  |" & vbNewLine & _
-        """4: (see chapter  XX    on page YY   )" & vbNewLine & _
-        "   '(see chapter 'R \r' on page 'PAGEREF')'|" & vbNewLine & _
-        """5: number on p.°XX" & vbNewLine & _
-        "    R \r ' on p.?PAGEREF" & vbNewLine & _
-        """(6) above/below" & vbNewLine & _
-        "|    R \p" & vbNewLine & _
-        ""
-    
-    string1 = string0
-    
-    Debug.Print string0
-    Debug.Print "Original"
-    
-    ' Remove comments:
-    s3 = strRemoveComments(string0)
-    Debug.Print s3
-    Debug.Print "Comments removed"
-    
-    ' Remove line breaks
-    s4 = Replace(s3, vbNewLine, "")
-    Debug.Print s4
-    Debug.Print "Line breaks removed"
-    
-    ' Do the split:
-    ' We can be sure, that there are no more vbNewLines.
-    ' Thus we replace the <|> (If they are Not literals) by <vbNewLine>
-    s5 = strReplaceNonLits(s4, "|", vbNewLine)
-    Debug.Print s5
-    Debug.Print "splitted into lines"
-    
-    ' Treat escaped <apo>s:
-    s5 = Replace(s5, "\" & "'", "'")
-    
-    ' Treat <? (representing protected blank Chr(160)) And <\? (representing literal <?):
-    s6 = Replace(s5, "?", Chr(160))
-    s6 = Replace(s6, "\" & Chr(160), "?")
-    Debug.Print s6
-    
-    ' Trim:
-    ' (We want exactly one blank at the start And end of each line)
-    s7 = RegExReplace(s6, "\n *", " ")            ' Replace multiple blanks after linebreak by exactly one
-    Debug.Print s7
-    Debug.Print "Start of line."
-    s7 = RegExReplace(s7, "(\S)([\r\n])", "$1 $2")        ' If a line ends Not on a blank, add one
-    Debug.Print s7
-    Debug.Print "Added."
-    s7 = RegExReplace(s7, "(\S) {2,}([\r])", "$1 $2")   ' Reduce multiple blanks at end of line To one
-    Debug.Print s7
-    Debug.Print "Reduced."
-    s7 = Trim(s7) ' Remove possibly multiple        blanks at start And end of string
-    Debug.Print s7
-    Debug.Print "Trimmed."
-    s7 = " " & s7 & " " ' Make sure, there is exactly one blank  at start And end of string
-    Debug.Print s7
-    Debug.Print "Finished."
-    
-    s8 = strPrepare(string0)
-    If s8 <> s7 Then
-        Stop
-    End If
-    Debug.Print s8
-    Stop
-End Sub
 
 Private Function CodesComply(ByVal CodeToBCheck As String, ByVal CodeExpected As String) As Boolean
     Dim Element As Variant
