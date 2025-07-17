@@ -1216,6 +1216,23 @@ Private Sub CheckEnsureStyles()
             .QuickStyle = True
         End With
     End If
+    If AddMissingStyle("论文摘要正文", wdStyleTypeParagraph, objStyle) Then
+        With objStyle
+            .BaseStyle = wdStyleNormal
+            .NextParagraphStyle = "论文摘要正文"
+            .ParagraphFormat.SpaceBefore = 0
+            .ParagraphFormat.SpaceAfter = 0
+            .ParagraphFormat.CharacterUnitFirstLineIndent = 2
+            .ParagraphFormat.LineSpacingRule = wdLineSpaceExactly
+            .ParagraphFormat.LineSpacing = 20
+            .ParagraphFormat.Alignment = wdAlignParagraphJustify
+            .Font.NameFarEast = "宋体"
+            .Font.NameAscii = "Times New Roman"
+            .Font.Bold = False
+            .Font.Size = 12
+            .QuickStyle = True
+        End With
+    End If
     If AddMissingStyle("论文摘要标题", wdStyleTypeParagraph, objStyle) Then
         With objStyle
             .BaseStyle = wdStyleNormal
@@ -1234,23 +1251,6 @@ Private Sub CheckEnsureStyles()
             .Font.NameAscii = "Times New Roman"
             .Font.Bold = True
             .Font.Size = 16
-            .QuickStyle = True
-        End With
-    End If
-    If AddMissingStyle("论文摘要正文", wdStyleTypeParagraph, objStyle) Then
-        With objStyle
-            .BaseStyle = wdStyleNormal
-            .NextParagraphStyle = "论文摘要正文"
-            .ParagraphFormat.SpaceBefore = 0
-            .ParagraphFormat.SpaceAfter = 0
-            .ParagraphFormat.CharacterUnitFirstLineIndent = 2
-            .ParagraphFormat.LineSpacingRule = wdLineSpaceExactly
-            .ParagraphFormat.LineSpacing = 20
-            .ParagraphFormat.Alignment = wdAlignParagraphJustify
-            .Font.NameFarEast = "宋体"
-            .Font.NameAscii = "Times New Roman"
-            .Font.Bold = False
-            .Font.Size = 12
             .QuickStyle = True
         End With
     End If
@@ -1399,7 +1399,7 @@ Private Sub CheckEnsureStyles()
     If AddMissingStyle("论文参考文献标题", wdStyleTypeParagraph, objStyle) Then
         With objStyle
             .BaseStyle = wdStyleNormal
-            .NextParagraphStyle = "书目1"
+            .NextParagraphStyle = "书目"
             .ParagraphFormat.KeepWithNext = True
             .ParagraphFormat.KeepTogether = True
             .ParagraphFormat.LineUnitAfter = 0.5
@@ -1453,24 +1453,6 @@ Private Sub CheckEnsureStyles()
             .QuickStyle = True
         End With
     End If
-    If AddMissingStyle("论文图", wdStyleTypeParagraph, objStyle) Then
-        With objStyle
-            .BaseStyle = wdStyleNormal
-            .NextParagraphStyle = "论文图题"
-            .ParagraphFormat.KeepWithNext = True
-            .ParagraphFormat.SpaceBefore = 0
-            .ParagraphFormat.SpaceAfter = 0
-            .NoSpaceBetweenParagraphsOfSameStyle = True
-            .ParagraphFormat.LineSpacingRule = wdLineSpace1pt5
-            .ParagraphFormat.FirstLineIndent = 0
-            .ParagraphFormat.Alignment = wdAlignParagraphCenter
-            .Font.NameFarEast = "宋体"
-            .Font.NameAscii = "Times New Roman"
-            .Font.Bold = False
-            .Font.Size = 12
-            .QuickStyle = True
-        End With
-    End If
     If AddMissingStyle("论文图题", wdStyleTypeParagraph, objStyle) Then
         With objStyle
             .BaseStyle = wdStyleNormal
@@ -1488,6 +1470,24 @@ Private Sub CheckEnsureStyles()
             .Font.NameAscii = "Times New Roman"
             .Font.Bold = False
             .Font.Size = 10.5
+            .QuickStyle = True
+        End With
+    End If
+    If AddMissingStyle("论文图", wdStyleTypeParagraph, objStyle) Then
+        With objStyle
+            .BaseStyle = wdStyleNormal
+            .NextParagraphStyle = "论文图题"
+            .ParagraphFormat.KeepWithNext = True
+            .ParagraphFormat.SpaceBefore = 0
+            .ParagraphFormat.SpaceAfter = 0
+            .NoSpaceBetweenParagraphsOfSameStyle = True
+            .ParagraphFormat.LineSpacingRule = wdLineSpace1pt5
+            .ParagraphFormat.FirstLineIndent = 0
+            .ParagraphFormat.Alignment = wdAlignParagraphCenter
+            .Font.NameFarEast = "宋体"
+            .Font.NameAscii = "Times New Roman"
+            .Font.Bold = False
+            .Font.Size = 12
             .QuickStyle = True
         End With
     End If
