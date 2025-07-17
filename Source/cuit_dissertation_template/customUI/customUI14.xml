@@ -1,0 +1,97 @@
+<customUI xmlns="http://schemas.microsoft.com/office/2009/07/customui" onLoad="LoadCuitRibbon_RibbonFun">
+    <ribbon>
+        <tabs>
+            <tab id="CuitTab" label="毕业论文">
+                <group id="BaseInfo" label="模版工具" autoScale="true">
+                    <button id="UpdateBaseInfo" label="论文基础信息" size="large" 
+                        imageMso="Info"
+                        supertip="点击更新论文的基础信息"
+                        onAction="ShowInfoDialog_RibbonFun" />
+                    <button id="UpdatePages" label="更新正文页数" size="large" 
+                        imageMso="HeaderFooterNumberOfPagesInsert"
+                        supertip="点击更新文档中正文页数"
+                        onAction="UpdatePages_RibbonFun" />
+                    <button id="RemoveSapces" label="删除多余空格" size="large" 
+                        imageMso="QueryDelete"
+                        supertip="删除中英文字符以及中文字符间的多余空格（不会删除英文间的空格）"
+                        onAction="RemoveSpaces_RibbonFun" />
+                </group>
+                <group id="Number" label="题注相关" autoScale="true">
+                    <button id="InsertPicNo" label="插入图编号" size="large" 
+                        imageMso="PicturePositionGallery"
+                        supertip="点击插入图片编号"
+                        onAction="InsertPicNo_RibbonFun" />
+                    <button id="InsertTblNo" label="插入表编号" size="large" 
+                        imageMso="TableIndexes"
+                        supertip="点击插入表格编号"
+                        onAction="InsertTblNo_RibbonFun" />
+                    <button id="InsertAlgorithmTbl" label="插入算法" size="large" 
+                        imageMso="PivotTableFieldSettings"
+                        supertip="点击插入算法编号和算法表格"
+                        onAction="InsertAlgorithmTbl_RibbonFun" />
+                    <separator id="separator1"/>
+                    <box id="box1" boxStyle="vertical">
+                       <button id="InsertDefNo" label="定义" imageMso="AddressBook" onAction="InsertDefNo_RibbonFun" supertip="插入定义编号" />
+                       <button id="InsertTheoremNo" label="定理" imageMso="ShapeStar" onAction="InsertTheoremNo_RibbonFun" supertip="插入定理编号" />
+                       <button id="InsertCorollaryNo" label="推论" imageMso="RightArrow2" onAction="InsertCorollaryNo_RibbonFun" supertip="插入推论编号" />
+                    </box>
+                    <box id="box2" boxStyle="vertical">
+                        <button id="InsertLemmaNo" label="引理" imageMso="TipWizardHelp" onAction="InsertLemmaNo_RibbonFun" supertip="插入引理编号" />
+                        <button id="InsertProblemNo" label="问题" imageMso="Help" onAction="InsertProblemNo_RibbonFun" supertip="插入问题编号" />
+                        <button id="InsertConclusionNo" label="结论" imageMso="AdpPrimaryKey" onAction="InsertConclusionNo_RibbonFun" supertip="插入结论编号" />
+                    </box>
+                    <separator id="separator2"/>
+                    <button id="InsertCrossReference" label="插入交叉引用" size="large" 
+                        imageMso="CrossReferenceInsert"
+                        screentip="插入图题/表题引用"
+                        supertip="将光标定位到需要插入图题/表题引用的位置，第一次点击该按钮；然后将光标定位到需要插入的图题/表题位置，第二次点击该按钮，完成交叉引用插入。"
+                        onAction="InsertCrossReference_RibbonFun" />
+                </group>
+                <group id="Format" label="样式设置" autoScale="true">  
+                    <button id="btnH1" label="论文标题1" imageMso="PivotTableLayoutShowInOutlineForm" size="large" 
+                    onAction="H1_RibbonFun" screentip="设置选定文本样式为'论文标题1'" />
+                    <button id="btnH2" label="论文标题2" imageMso="PivotTableLayoutShowInCompactForm" size="large" 
+                    onAction="H2_RibbonFun" screentip="设置选定文本样式为'论文标题2'" />
+                    <button id="btnH3" label="论文标题3" imageMso="PivotTableLayoutBlankRows" size="large" 
+                    onAction="H3_RibbonFun" screentip="设置选定文本样式为'论文标题3'"/>
+                    <button id="btnH4" label="论文标题4" imageMso="PivotTableLayoutSubtotals" size="large" 
+                    onAction="H4_RibbonFun" screentip="设置选定文本样式为'论文标题4'" />
+                    <button id="btnH5" label="论文标题5" imageMso="PivotTableLayoutShowInTabularForm" size="large" 
+                    onAction="H5_RibbonFun" screentip="设置选定文本样式为'论文标题5'" />
+                    <button id="btnH6" label="论文标题6" imageMso="PivotTableLayoutGrandTotals" size="large" 
+                    onAction="H6_RibbonFun" screentip="设置选定文本样式为'论文标题6'" />
+                    <separator id="separator3"/>
+                    <box id="box3" boxStyle="vertical">
+                       <button id="btnBullet" label="无序列表" image="bulletitem" onAction="MakeBulletItem_RibbonFun" screentip="将所选文字格式化为无序列表" />
+                       <button id="btnNumbered" label="有序列表" image="numitem" onAction="MakeNumItem_RibbonFun" screentip="将所选文字格式化为有序列表" />
+                       <button id="btnNumNoIndent" label="无缩序号" image="dashitem" onAction="MakeNumNoIndentItem_RibbonFun" screentip="在所选段落前加上带括号的序号" />
+                    </box>
+                    <box id="box4" boxStyle="vertical">
+                       <button id="btnListLevelUp" label="提升级别" image="arrowright" onAction="ListLevelUp_RibbonFun" screentip="提升选定文本的列表级别" />
+                       <button id="btnListLevelDown" label="降低级别" image="arrowleft" onAction="ListLevelDown_RibbonFun" screentip="降低选定文本的列表级别" />
+                       <button id="btnToggleNum" label="切换序号" image="togglenumbering" onAction="RestartNumbering_RibbonFun" screentip="在 重新编号 和 继续编号 之间切换" supertip="只能在有序列表上使用" />
+                    </box>
+                    <separator id="separator4"/>
+                    <button id="Standard" label="论文正文" image="normal" size="large" 
+                    onAction="MakeStandard_RibbonFun" screentip="格式化为正文样式" supertip="将选定文本格式化为'论文正文'样式。" />
+                    <button id="Progcode" label="源代码" imageMso="CodeEdit" size="large" 
+                    onAction="MakeProgCode_RibbonFun" screentip="格式化为'论文源代码'样式" />
+                </group>
+                <group id="RestoreTemplate" label="模板相关" autoScale="true">
+                    <button id="btnRestTemplate" label="模板检查恢复" imageMso="AccessThemesGallery" size="large" 
+                    onAction="RestoreSettings_RibbonFun" screentip="恢复所有样式" supertip="当原始文档中的样式被修改或删除时，通过该功能进行恢复。" />
+                    <gallery id="GetLatestVersion_Gallery" size="normal" imageMso="Refresh" label="获取更新">
+                        <button id="GetLatestVersion_Gitee_Button" label="Gitee"
+                          screentip="打开 Gitee 网页获取最新版本" image="gitee"
+                          onAction="GetLatestVersion_Gitee_RibbonFun" />
+                        <button id="GetLatestVersion_Github_Button" label="Github"
+                          screentip="打开 Github 网页获取最新版本" image="github"
+                          onAction="GetLatestVersion_Github_RibbonFun" />
+                  </gallery>
+                  <button id="About_Button" label="关于模板" size="normal" imageMso="Info"
+                    onAction="About_RibbonFun" />
+                </group>
+            </tab>
+        </tabs>
+    </ribbon>
+</customUI>
