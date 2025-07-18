@@ -18,6 +18,7 @@ param (
     [string]$ProjectCNName = "成都信息工程大学硕士学位论文模板",
     [string]$OutputPath = ".\Release",
     [string]$SourcePath = ".\Source",
+    [string]$DocumentPath = ".\Documents",
     [switch]$CleanBeforeBuild
 )
 
@@ -45,7 +46,7 @@ if ($CleanBeforeBuild) {
 $null = New-Item -ItemType Directory -Path $tempDir -Force
 
 # 1. 处理主模板文件
-$dotmPath = Join-Path $OutputPath "$ProjectName.dotm"
+$dotmPath = Join-Path $DocumentPath "$ProjectName.dotm"
 if (Test-Path $dotmPath) {
     # 复制 .dotm 到临时目录并重命名为 .zip
     $tempZipPath = Join-Path $tempDir "$ProjectName.zip"
@@ -73,9 +74,6 @@ if (Test-Path $customUIPath) {
     $null = New-Item -ItemType Directory -Path $customUITargetPath -Force
     # 复制 Source \ CustomUI 目录下所有文件到空的 customUI 目录
     Copy-Item -Path "$customUIPath\*" -Destination $customUITargetPath -Recurse -Force
-    
-    # # 清理解压的文件
-    # Get-ChildItem -Path $tempDotmPath -Exclude "*.zip" | Remove-Item -Recurse -Force
 }
 
 # 3. 添加 VBA 项目
