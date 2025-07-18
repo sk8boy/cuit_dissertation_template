@@ -64,7 +64,7 @@
                     <box id="box3" boxStyle="vertical">
                        <button id="btnBullet" label="无序列表" image="bulletitem" onAction="MakeBulletItem_RibbonFun" screentip="将所选文字格式化为无序列表" />
                        <button id="btnNumbered" label="有序列表" image="numitem" onAction="MakeNumItem_RibbonFun" screentip="将所选文字格式化为有序列表" />
-                       <button id="btnNumNoIndent" label="无缩序号" image="dashitem" onAction="MakeNumNoIndentItem_RibbonFun" screentip="在所选段落前加上带括号的序号" />
+                       <button id="btnNumNoIndent" label="无缩序号" image="noidtitem" onAction="MakeNumNoIndentItem_RibbonFun" screentip="在所选段落前加上带括号的序号" />
                     </box>
                     <box id="box4" boxStyle="vertical">
                        <button id="btnListLevelUp" label="提升级别" image="arrowright" onAction="ListLevelUp_RibbonFun" screentip="提升选定文本的列表级别" />

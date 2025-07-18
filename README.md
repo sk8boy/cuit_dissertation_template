@@ -308,3 +308,14 @@
 - [InsertCrossReferencesComfortably：](https://github.com/boar24/InsertCrossReferencesComfortably)基于该项目，实现了插入交叉引用功能。该项目中提供了丰富的功能，包括插入章节、页码、书签等功能，本模版开发中仅使用了插入 图编号和表编号 的功能。
 
 - [HandyRefVBA：](https://github.com/shishouyuan/HandyRefVBA)借鉴了该项目中的经验，实现了模板中 “关于” 和 “获取更新” 两个菜单。同时，该项目页实现了一种不同的插入交叉引用方式，单考虑到 AxMath 和 MathType 插入引用时的使用习惯，最终选用了前面一种实现方式。
+
+## 有用的链接
+
+- 微软官方的 Word VB 开发文档
+  https://learn.microsoft.com/en-us/office/vba/api/overview/word
+
+- Office 自带的选项卡图标
+  https://bert-toolkit.com/imagemso-list.html
+
+- 微软官方关于 VBA 项目文件格式规范
+  https://learn.microsoft.com/en-us/openspecs/office_file_formats/ms-ovba/575462ba-bf67-4190-9fac-c275523c75fc

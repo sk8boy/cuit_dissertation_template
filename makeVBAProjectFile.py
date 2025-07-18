@@ -20,7 +20,7 @@ def build_word_file():
         doc = word.Documents.Add()
         prj = doc.VBProject
     except Exception as e:
-        print(f'发生错误，检查是否 Word 程序正在运行：{e}')
+        print(f'发生错误，检查是否 Word 或 WPS 正在运行：{e}')
         exit(1)
 
     for f in SRC_DIR.iterdir():

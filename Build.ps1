@@ -114,11 +114,11 @@ if (Test-Path $vbaPath) {
     $vbaProjectFile = Join-Path $vbaPath "vbaProject.bin"
     try {
         python $pyScript
-        if (Test-Path $vbaProjectFile) {
+        if (($LASTEXITCODE -eq 0) -and (Test-Path $vbaProjectFile)) {
             Write-Host "提取成功 -> $vbaProjectFile"
         }
         else {
-            Write-Error "提取失败，vbaProject.bin 未生成"
+            Write-Error "Python 脚本执行失败，vbaProject.bin 未生成"
             exit 1
         }
     }
