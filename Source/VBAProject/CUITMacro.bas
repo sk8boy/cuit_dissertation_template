@@ -24,7 +24,7 @@ Const RefBrokenCommentTitle = "$_REFERENCE_BROKEN_COMMENT$"
 
 Const TEXT_AppName = "成都信息工程大学硕士学位论文模板"
 Const TEXT_Author = "王铁军 @ 成都信息工程大学 计算机学院"
-Const TEXT_Description = "为使用 Word 或 WPS 撰写硕士学位论文的同学提供一个快速上手的模板。"
+Const TEXT_Description = "为使用 Word 撰写硕士学位论文的同学提供一个快速上手的模板。"
 Const TEXT_VersionPrompt = "版本："
 Const TEXT_NonCommecialPrompt = "仅限非商业用途"
 
@@ -660,14 +660,6 @@ Public Sub H1_RibbonFun(control As IRibbonControl)
     Set ur = Application.UndoRecord
     ur.StartCustomRecord "应用标题1样式"
     If Not ApplyParaStyle("论文标题1", 0, False) Then Err.Raise ERR_CANCEL
-    With Selection
-        'If H2 directly follows H1, remove SpaceBefore from H2
-        If Not .Paragraphs(1).Next Is Nothing Then
-            If .Paragraphs(1).Next.Style = "论文标题2" Then
-                .Paragraphs(1).Next.SpaceBefore = 0
-            End If
-        End If
-    End With
     Application.ScreenRefresh
     ur.EndCustomRecord
     Exit Sub ' 正常退出点，避免进入错误处理程序
@@ -690,14 +682,6 @@ Public Sub H2_RibbonFun(control As IRibbonControl)
     Set ur = Application.UndoRecord
     ur.StartCustomRecord "应用标题2样式"
     If Not ApplyParaStyle("论文标题2", 0, False) Then Err.Raise ERR_CANCEL
-    With Selection
-        'Remove space before, If H2 directly follows H1
-        If Not .Paragraphs(1).Previous Is Nothing Then
-            If .Paragraphs(1).Previous.Style = "论文标题1" Then
-                .Paragraphs(1).SpaceBefore = 0
-            End If
-        End If
-    End With
     Application.ScreenRefresh
     ur.EndCustomRecord
     Exit Sub ' 正常退出点，避免进入错误处理程序

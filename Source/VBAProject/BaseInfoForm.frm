@@ -93,9 +93,9 @@ Private Sub UpdateContentControl(title As String, val As String)
         cc.Range.text = val
         cc.LockContents = True ' 重新锁定(如果需要)
         
-        'MsgBox "内容控件已更新!", vbInformation
+        'MsgBox "内容控件已更新!", vbInformation, C_TITLE
     Else
-        MsgBox "未找到指定标题的内容控件!", vbExclamation
+        MsgBox "未找到指定标题的内容控件!", vbExclamation, C_TITLE
     End If
 End Sub
 
