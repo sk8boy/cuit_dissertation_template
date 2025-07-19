@@ -14,7 +14,7 @@ Public otherTeacherTitle As String
 Public mathTypeFound As Boolean
 Public axMathFound As Boolean
 
-Const Version = "v1.3.7"
+Const Version = "v1.3.9"
 
 Const TEXT_GithubUrl = "https://github.com/sk8boy/cuit_dissertation_template"
 Const TEXT_GiteeUrl = "https://gitee.com/tiejunwang/cuit_dissertation_template"
@@ -1356,6 +1356,25 @@ Private Sub CheckEnsureStyles()
             .Font.NameAscii = "Times New Roman"
             .Font.Bold = False
             .Font.Size = 10.5
+            .QuickStyle = True
+        End With
+    End If
+    If AddMissingStyle("论文定义", wdStyleTypeParagraph, objStyle) Then
+        With objStyle
+            .BaseStyle = wdStyleNormal
+            .NextParagraphStyle = "论文正文"
+            .ParagraphFormat.LineUnitAfter = 0.5
+            .ParagraphFormat.LineUnitBefore = 0.5
+            .ParagraphFormat.CharacterUnitFirstLineIndent = 2
+            .ParagraphFormat.WidowControl = True
+            .ParagraphFormat.LineSpacingRule = wdLineSpaceMultiple
+            .ParagraphFormat.LineSpacing = Application.LinesToPoints(1.25)
+            .ParagraphFormat.FirstLineIndent = 0
+            .ParagraphFormat.Alignment = wdAlignParagraphJustify
+            .Font.NameFarEast = "仿宋_GB2312"
+            .Font.NameAscii = "Times New Roman"
+            .Font.Bold = False
+            .Font.Size = 12
             .QuickStyle = True
         End With
     End If
