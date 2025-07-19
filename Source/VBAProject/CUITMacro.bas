@@ -1380,6 +1380,27 @@ Private Sub CheckEnsureStyles()
             .QuickStyle = True
         End With
     End If
+    If AddMissingStyle("论文算法标题", wdStyleTypeParagraph, objStyle) Then
+        With objStyle
+            .BaseStyle = wdStyleNormal
+            .NextParagraphStyle = "论文正文"
+            .ParagraphFormat.KeepWithNext = True
+            .ParagraphFormat.KeepTogether = True
+            .ParagraphFormat.Hyphenation = False
+            .ParagraphFormat.SpaceBefore = 0
+            .ParagraphFormat.SpaceAfter = 0
+            .NoSpaceBetweenParagraphsOfSameStyle = True
+            .ParagraphFormat.LineSpacingRule = wdLineSpaceExactly
+            .ParagraphFormat.LineSpacing = 20
+            .ParagraphFormat.FirstLineIndent = 0
+            .ParagraphFormat.Alignment = wdAlignParagraphCenter
+            .Font.NameFarEast = "宋体"
+            .Font.NameAscii = "Times New Roman"
+            .Font.Bold = False
+            .Font.Size = 10.5
+            .QuickStyle = True
+        End With
+    End If
     If AddMissingStyle("论文参考文献标题", wdStyleTypeParagraph, objStyle) Then
         With objStyle
             .BaseStyle = wdStyleNormal
