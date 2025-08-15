@@ -14,7 +14,7 @@ Public otherTeacherTitle As String
 Public mathTypeFound As Boolean
 Public axMathFound As Boolean
 
-Const Version = "v1.3.9"
+Const Version = "v1.3.10"
 
 Const TEXT_GithubUrl = "https://github.com/sk8boy/cuit_dissertation_template"
 Const TEXT_GiteeUrl = "https://gitee.com/tiejunwang/cuit_dissertation_template"
