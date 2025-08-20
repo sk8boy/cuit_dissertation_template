@@ -22,18 +22,22 @@
                         supertip="点击插入图片编号"
                         onAction="InsertPicNo_RibbonFun" />
                     <button id="InsertTblNo" label="插入表编号" size="large" 
-                        imageMso="TableIndexes"
+                        imageMso="PivotTableListFormulas"
                         supertip="点击插入表格编号"
                         onAction="InsertTblNo_RibbonFun" />
-                    <button id="InsertAlgorithmTbl" label="插入算法" size="large" 
-                        imageMso="PivotTableFieldSettings"
-                        supertip="点击插入算法编号和算法表格"
+                    <button id="InsertAlgorithmNo" label="插入算法编号" size="large" 
+                        imageMso="PasteMergeConditionalFormatting"
+                        supertip="点击仅插入算法编号"
+                        onAction="InsertAlgorithmNo_RibbonFun" />
+                    <button id="InsertAlgorithm" label="插入算法模板" size="large" 
+                        imageMso="PasteNoBorders"
+                        supertip="点击插入算法模板，包含算法编号和算法表格"
                         onAction="InsertAlgorithmTbl_RibbonFun" />
                     <separator id="separator1"/>
                     <box id="box1" boxStyle="vertical">
                        <button id="InsertDefNo" label="定义" imageMso="AddressBook" onAction="InsertDefNo_RibbonFun" supertip="插入定义编号" />
                        <button id="InsertTheoremNo" label="定理" imageMso="ShapeStar" onAction="InsertTheoremNo_RibbonFun" supertip="插入定理编号" />
-                       <button id="InsertCorollaryNo" label="推论" imageMso="RightArrow2" onAction="InsertCorollaryNo_RibbonFun" supertip="插入推论编号" />
+                       <button id="InsertCorollaryNo" label="推论" imageMso="OutlineDemote" onAction="InsertCorollaryNo_RibbonFun" supertip="插入推论编号" />
                     </box>
                     <box id="box2" boxStyle="vertical">
                         <button id="InsertLemmaNo" label="引理" imageMso="TipWizardHelp" onAction="InsertLemmaNo_RibbonFun" supertip="插入引理编号" />
@@ -48,18 +52,18 @@
                         onAction="InsertCrossReference_RibbonFun" />
                 </group>
                 <group id="Format" label="样式设置" autoScale="true">  
-                    <button id="btnH1" label="论文标题1" imageMso="PivotTableLayoutShowInOutlineForm" size="large" 
-                    onAction="H1_RibbonFun" screentip="设置选定文本样式为'论文标题1'" />
-                    <button id="btnH2" label="论文标题2" imageMso="PivotTableLayoutShowInCompactForm" size="large" 
-                    onAction="H2_RibbonFun" screentip="设置选定文本样式为'论文标题2'" />
-                    <button id="btnH3" label="论文标题3" imageMso="PivotTableLayoutBlankRows" size="large" 
-                    onAction="H3_RibbonFun" screentip="设置选定文本样式为'论文标题3'"/>
-                    <button id="btnH4" label="论文标题4" imageMso="PivotTableLayoutSubtotals" size="large" 
-                    onAction="H4_RibbonFun" screentip="设置选定文本样式为'论文标题4'" />
-                    <button id="btnH5" label="论文标题5" imageMso="PivotTableLayoutShowInTabularForm" size="large" 
-                    onAction="H5_RibbonFun" screentip="设置选定文本样式为'论文标题5'" />
-                    <button id="btnH6" label="论文标题6" imageMso="PivotTableLayoutGrandTotals" size="large" 
-                    onAction="H6_RibbonFun" screentip="设置选定文本样式为'论文标题6'" />
+                    <button id="btnH1" label="标题1" imageMso="PivotTableLayoutShowInOutlineForm" size="large" 
+                    onAction="H1_RibbonFun" screentip="设置选定文本样式为'标题 1'" />
+                    <button id="btnH2" label="标题2" imageMso="PivotTableLayoutShowInCompactForm" size="large" 
+                    onAction="H2_RibbonFun" screentip="设置选定文本样式为'标题 2'" />
+                    <button id="btnH3" label="标题3" imageMso="PivotTableLayoutBlankRows" size="large" 
+                    onAction="H3_RibbonFun" screentip="设置选定文本样式为'标题 3'"/>
+                    <button id="btnH4" label="标题4" imageMso="PivotTableLayoutSubtotals" size="large" 
+                    onAction="H4_RibbonFun" screentip="设置选定文本样式为'标题 4'" />
+                    <button id="btnH5" label="标题5" imageMso="PivotTableLayoutShowInTabularForm" size="large" 
+                    onAction="H5_RibbonFun" screentip="设置选定文本样式为'标题 5'" />
+                    <button id="btnH6" label="标题6" imageMso="PivotTableLayoutGrandTotals" size="large" 
+                    onAction="H6_RibbonFun" screentip="设置选定文本样式为'标题 6'" />
                     <separator id="separator3"/>
                     <box id="box3" boxStyle="vertical">
                        <button id="btnBullet" label="无序列表" image="bulletitem" onAction="MakeBulletItem_RibbonFun" screentip="将所选文字格式化为无序列表" />
