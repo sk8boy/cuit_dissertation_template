@@ -14,7 +14,7 @@ Public otherTeacherTitle As String
 Public mathTypeFound As Boolean
 Public axMathFound As Boolean
 
-Const Version = "v1.3.10"
+Const Version = "v1.3.12"
 
 Const TEXT_GithubUrl = "https://github.com/sk8boy/cuit_dissertation_template"
 Const TEXT_GiteeUrl = "https://gitee.com/tiejunwang/cuit_dissertation_template"
@@ -45,7 +45,7 @@ Public Sub UpdatePages_RibbonFun(ByVal control As IRibbonControl)
     ' 初始化搜索范围
     Set rng = ActiveDocument.Content
     rng.Find.ClearFormatting
-    rng.Find.Style = ActiveDocument.Styles("论文标题1")
+    rng.Find.Style = ActiveDocument.Styles("标题 1")
     
     ' 执行搜索（结合关键字和样式）
     With rng.Find
@@ -72,7 +72,7 @@ Public Sub UpdatePages_RibbonFun(ByVal control As IRibbonControl)
             Application.ScreenRefresh
             ur.EndCustomRecord
         Else
-            MsgBox "未找到符合关键字 '" & keyword & "' 且样式为 '" & ActiveDocument.Styles("论文标题1") & "' 的段落！", vbExclamation, C_TITLE
+            MsgBox "未找到符合关键字 '" & keyword & "' 且样式为 '" & ActiveDocument.Styles("标题 1") & "' 的段落！", vbExclamation, C_TITLE
         End If
     End With
     Exit Sub ' 正常退出点，避免进入错误处理程序
@@ -227,7 +227,7 @@ Public Sub InsertPicNo_RibbonFun(ByVal control As IRibbonControl)
         aRange.text = "-"
         Set bField = aRange.Fields.Add(currentRange, wdFieldEmpty, "QUOTE ""一九一一年一月日"" \@""D""", False)
         Set aRange = .Range(bField.Code.End - 9, bField.Code.End - 9)
-        Set bField = aRange.Fields.Add(aRange, wdFieldEmpty, "STYLEREF ""论文标题1"" \s", False)
+        Set bField = aRange.Fields.Add(aRange, wdFieldEmpty, "STYLEREF ""标题 1"" \s", False)
     End With
     Selection.TypeText " "
     If Not ApplyParaStyle("论文图题", 0, False) Then Err.Raise ERR_CANCEL
@@ -259,7 +259,7 @@ Public Sub InsertTblNo_RibbonFun(ByVal control As IRibbonControl)
         aRange.text = "-"
         Set bField = aRange.Fields.Add(currentRange, wdFieldEmpty, "QUOTE ""一九一一年一月日"" \@""D""", False)
         Set aRange = .Range(bField.Code.End - 9, bField.Code.End - 9)
-        Set bField = aRange.Fields.Add(aRange, wdFieldEmpty, "STYLEREF ""论文标题1"" \s", False)
+        Set bField = aRange.Fields.Add(aRange, wdFieldEmpty, "STYLEREF ""标题 1"" \s", False)
     End With
     Selection.TypeText " "
     If Not ApplyParaStyle("论文表题", 0, False) Then Err.Raise ERR_CANCEL
@@ -293,7 +293,7 @@ Public Sub InsertDefNo_RibbonFun(ByVal control As IRibbonControl)
         aRange.text = "-"
         Set bField = aRange.Fields.Add(currentRange, wdFieldEmpty, "QUOTE ""一九一一年一月日"" \@""D""", False)
         Set aRange = .Range(bField.Code.End - 9, bField.Code.End - 9)
-        Set bField = aRange.Fields.Add(aRange, wdFieldEmpty, "STYLEREF ""论文标题1"" \s", False)
+        Set bField = aRange.Fields.Add(aRange, wdFieldEmpty, "STYLEREF ""标题 1"" \s", False)
     End With
     Selection.TypeText "："
     currentPos = Selection.Range.Start
@@ -336,7 +336,7 @@ Public Sub InsertTheoremNo_RibbonFun(ByVal control As IRibbonControl)
         aRange.text = "-"
         Set bField = aRange.Fields.Add(currentRange, wdFieldEmpty, "QUOTE ""一九一一年一月日"" \@""D""", False)
         Set aRange = .Range(bField.Code.End - 9, bField.Code.End - 9)
-        Set bField = aRange.Fields.Add(aRange, wdFieldEmpty, "STYLEREF ""论文标题1"" \s", False)
+        Set bField = aRange.Fields.Add(aRange, wdFieldEmpty, "STYLEREF ""标题 1"" \s", False)
     End With
     Selection.TypeText "："
     currentPos = Selection.Range.Start
@@ -379,7 +379,7 @@ Public Sub InsertCorollaryNo_RibbonFun(ByVal control As IRibbonControl)
         aRange.text = "-"
         Set bField = aRange.Fields.Add(currentRange, wdFieldEmpty, "QUOTE ""一九一一年一月日"" \@""D""", False)
         Set aRange = .Range(bField.Code.End - 9, bField.Code.End - 9)
-        Set bField = aRange.Fields.Add(aRange, wdFieldEmpty, "STYLEREF ""论文标题1"" \s", False)
+        Set bField = aRange.Fields.Add(aRange, wdFieldEmpty, "STYLEREF ""标题 1"" \s", False)
     End With
     Selection.TypeText "："
     currentPos = Selection.Range.Start
@@ -422,7 +422,7 @@ Public Sub InsertLemmaNo_RibbonFun(ByVal control As IRibbonControl)
         aRange.text = "-"
         Set bField = aRange.Fields.Add(currentRange, wdFieldEmpty, "QUOTE ""一九一一年一月日"" \@""D""", False)
         Set aRange = .Range(bField.Code.End - 9, bField.Code.End - 9)
-        Set bField = aRange.Fields.Add(aRange, wdFieldEmpty, "STYLEREF ""论文标题1"" \s", False)
+        Set bField = aRange.Fields.Add(aRange, wdFieldEmpty, "STYLEREF ""标题 1"" \s", False)
     End With
     Selection.TypeText "："
     currentPos = Selection.Range.Start
@@ -465,7 +465,7 @@ Public Sub InsertProblemNo_RibbonFun(ByVal control As IRibbonControl)
         aRange.text = "-"
         Set bField = aRange.Fields.Add(currentRange, wdFieldEmpty, "QUOTE ""一九一一年一月日"" \@""D""", False)
         Set aRange = .Range(bField.Code.End - 9, bField.Code.End - 9)
-        Set bField = aRange.Fields.Add(aRange, wdFieldEmpty, "STYLEREF ""论文标题1"" \s", False)
+        Set bField = aRange.Fields.Add(aRange, wdFieldEmpty, "STYLEREF ""标题 1"" \s", False)
     End With
     Selection.TypeText "："
     currentPos = Selection.Range.Start
@@ -508,7 +508,7 @@ Public Sub InsertConclusionNo_RibbonFun(ByVal control As IRibbonControl)
         aRange.text = "-"
         Set bField = aRange.Fields.Add(currentRange, wdFieldEmpty, "QUOTE ""一九一一年一月日"" \@""D""", False)
         Set aRange = .Range(bField.Code.End - 9, bField.Code.End - 9)
-        Set bField = aRange.Fields.Add(aRange, wdFieldEmpty, "STYLEREF ""论文标题1"" \s", False)
+        Set bField = aRange.Fields.Add(aRange, wdFieldEmpty, "STYLEREF ""标题 1"" \s", False)
     End With
     Selection.TypeText "："
     currentPos = Selection.Range.Start
@@ -632,7 +632,7 @@ Private Sub InsertAlgorithmNo()
         aRange.text = "-"
         Set bField = aRange.Fields.Add(currentRange, wdFieldEmpty, "QUOTE ""一九一一年一月日"" \@""D""", False)
         Set aRange = .Range(bField.Code.End - 9, bField.Code.End - 9)
-        Set bField = aRange.Fields.Add(aRange, wdFieldEmpty, "STYLEREF ""论文标题1"" \s", False)
+        Set bField = aRange.Fields.Add(aRange, wdFieldEmpty, "STYLEREF ""标题 1"" \s", False)
     End With
     Selection.TypeText " "
     If Not ApplyParaStyle("论文算法标题", 0, False) Then Err.Raise ERR_CANCEL
@@ -660,7 +660,7 @@ Public Sub H1_RibbonFun(control As IRibbonControl)
     On Error GoTo ERROR_HANDLER
     Set ur = Application.UndoRecord
     ur.StartCustomRecord "应用标题1样式"
-    If Not ApplyParaStyle("论文标题1", 0, False) Then Err.Raise ERR_CANCEL
+    If Not ApplyParaStyle("标题 1", 0, False) Then Err.Raise ERR_CANCEL
     Application.ScreenRefresh
     ur.EndCustomRecord
     Exit Sub ' 正常退出点，避免进入错误处理程序
@@ -682,7 +682,7 @@ Public Sub H2_RibbonFun(control As IRibbonControl)
     On Error GoTo ERROR_HANDLER
     Set ur = Application.UndoRecord
     ur.StartCustomRecord "应用标题2样式"
-    If Not ApplyParaStyle("论文标题2", 0, False) Then Err.Raise ERR_CANCEL
+    If Not ApplyParaStyle("标题 2", 0, False) Then Err.Raise ERR_CANCEL
     Application.ScreenRefresh
     ur.EndCustomRecord
     Exit Sub ' 正常退出点，避免进入错误处理程序
@@ -707,12 +707,12 @@ Public Sub H3_RibbonFun(control As IRibbonControl)
     ur.StartCustomRecord "应用标题3样式"
     Set SaveRange = Selection.Range
     'Apply the built-in Heading 3 style (paragraph style)
-    If Not ApplyParaStyle("论文标题3", 0, False) Then Err.Raise ERR_CANCEL
+    If Not ApplyParaStyle("标题 3", 0, False) Then Err.Raise ERR_CANCEL
     SaveRange.Select
     With Selection
         'Remove space before, If H3 directly follows H2 Or H1
         If Not .Paragraphs(1).Previous Is Nothing Then
-            If (.Paragraphs(1).Previous.Style = "论文标题2") Or (.Paragraphs(1).Previous.Style = "论文标题1") Then
+            If (.Paragraphs(1).Previous.Style = "标题 2") Or (.Paragraphs(1).Previous.Style = "标题 1") Then
                 .Paragraphs(1).SpaceBefore = 0
             End If
         End If
@@ -741,12 +741,12 @@ Public Sub H4_RibbonFun(control As IRibbonControl)
     ur.StartCustomRecord "应用标题4样式"
     Set SaveRange = Selection.Range
     'Apply the built-in Heading 4 style (paragraph style)
-    If Not ApplyParaStyle("论文标题4", 0, False) Then Err.Raise ERR_CANCEL
+    If Not ApplyParaStyle("标题 4", 0, False) Then Err.Raise ERR_CANCEL
     SaveRange.Select
     With Selection
         'Remove space before, If H4 directly follows H3, H2 Or H1
         If Not .Paragraphs(1).Previous Is Nothing Then
-            If (.Paragraphs(1).Previous.Style = "论文标题3") Or (.Paragraphs(1).Previous.Style = "论文标题2") Or (.Paragraphs(1).Previous.Style = "论文标题1") Then
+            If (.Paragraphs(1).Previous.Style = "标题 3") Or (.Paragraphs(1).Previous.Style = "标题 2") Or (.Paragraphs(1).Previous.Style = "标题 1") Then
                 .Paragraphs(1).SpaceBefore = 0
             End If
         End If
@@ -775,12 +775,12 @@ Public Sub H5_RibbonFun(control As IRibbonControl)
     ur.StartCustomRecord "应用标题5样式"
     Set SaveRange = Selection.Range
     'Apply the built-in Heading 5 style (paragraph style)
-    If Not ApplyParaStyle("论文标题5", 0, False) Then Err.Raise ERR_CANCEL
+    If Not ApplyParaStyle("标题 5", 0, False) Then Err.Raise ERR_CANCEL
     SaveRange.Select
     With Selection
         'Remove space before, If H5 directly follows H4, H3, H2 Or H1
         If Not .Paragraphs(1).Previous Is Nothing Then
-            If (.Paragraphs(1).Previous.Style = "论文标题4") Or (.Paragraphs(1).Previous.Style = "论文标题3") Or (.Paragraphs(1).Previous.Style = "论文标题2") Or (.Paragraphs(1).Previous.Style = "论文标题1") Then
+            If (.Paragraphs(1).Previous.Style = "标题 4") Or (.Paragraphs(1).Previous.Style = "标题 3") Or (.Paragraphs(1).Previous.Style = "标题 2") Or (.Paragraphs(1).Previous.Style = "标题 1") Then
                 .Paragraphs(1).SpaceBefore = 0
             End If
         End If
@@ -809,12 +809,12 @@ Public Sub H6_RibbonFun(control As IRibbonControl)
     ur.StartCustomRecord "应用标题6样式"
     Set SaveRange = Selection.Range
     'Apply the built-in Heading 6 style (paragraph style)
-    If Not ApplyParaStyle("论文标题6", 0, False) Then Err.Raise ERR_CANCEL
+    If Not ApplyParaStyle("标题 6", 0, False) Then Err.Raise ERR_CANCEL
     SaveRange.Select
     With Selection
         'Remove space before, If H5 directly follows H5, H4, H3, H2 Or H1
         If Not .Paragraphs(1).Previous Is Nothing Then
-            If (.Paragraphs(1).Previous.Style = "论文标题5") Or (.Paragraphs(1).Previous.Style = "论文标题4") Or (.Paragraphs(1).Previous.Style = "论文标题3") Or (.Paragraphs(1).Previous.Style = "论文标题2") Or (.Paragraphs(1).Previous.Style = "论文标题1") Then
+            If (.Paragraphs(1).Previous.Style = "标题 5") Or (.Paragraphs(1).Previous.Style = "标题 4") Or (.Paragraphs(1).Previous.Style = "标题 3") Or (.Paragraphs(1).Previous.Style = "标题 2") Or (.Paragraphs(1).Previous.Style = "标题 1") Then
                 .Paragraphs(1).SpaceBefore = 0
             End If
         End If
@@ -1576,7 +1576,7 @@ Private Sub CheckEnsureStyles()
             .QuickStyle = True
         End With
     End If
-    If AddMissingStyle("论文标题1", wdStyleTypeParagraph, objStyle) Then
+    If AddMissingStyle("标题 1", wdStyleTypeParagraph, objStyle) Then
         With objStyle
             .BaseStyle = wdStyleNormal
             .NextParagraphStyle = "论文正文"
@@ -1588,18 +1588,18 @@ Private Sub CheckEnsureStyles()
             .ParagraphFormat.OutlineLevel = wdOutlineLevel1
             .ParagraphFormat.LineSpacingRule = wdLineSpaceExactly
             .ParagraphFormat.LineSpacing = 20
+            .ParagraphFormat.LeftIndent = 0
             .ParagraphFormat.FirstLineIndent = 0
             .ParagraphFormat.Alignment = wdAlignParagraphCenter
-            .ParagraphFormat.LeftIndent = 0
             .Font.NameFarEast = "宋体"
             .Font.NameAscii = "Times New Roman"
             .Font.Bold = True
             .Font.Size = 16
             .QuickStyle = True
-            ListGalleries(wdOutlineNumberGallery).ListTemplates(1).ListLevels(1).LinkedStyle = "论文标题1"
+            ListGalleries(wdOutlineNumberGallery).ListTemplates(1).ListLevels(1).LinkedStyle = "标题 1"
         End With
     End If
-    If AddMissingStyle("论文标题2", wdStyleTypeParagraph, objStyle) Then
+    If AddMissingStyle("标题 2", wdStyleTypeParagraph, objStyle) Then
         With objStyle
             .BaseStyle = wdStyleNormal
             .NextParagraphStyle = "论文正文"
@@ -1611,6 +1611,7 @@ Private Sub CheckEnsureStyles()
             .ParagraphFormat.OutlineLevel = wdOutlineLevel2
             .ParagraphFormat.LineSpacingRule = wdLineSpaceExactly
             .ParagraphFormat.LineSpacing = 20
+            .ParagraphFormat.LeftIndent = 0
             .ParagraphFormat.FirstLineIndent = 0
             .ParagraphFormat.Alignment = wdAlignParagraphLeft
             .Font.NameFarEast = "宋体"
@@ -1618,10 +1619,10 @@ Private Sub CheckEnsureStyles()
             .Font.Bold = True
             .Font.Size = 14
             .QuickStyle = True
-            ListGalleries(wdOutlineNumberGallery).ListTemplates(1).ListLevels(2).LinkedStyle = "论文标题2"
+            ListGalleries(wdOutlineNumberGallery).ListTemplates(1).ListLevels(2).LinkedStyle = "标题 2"
         End With
     End If
-    If AddMissingStyle("论文标题3", wdStyleTypeParagraph, objStyle) Then
+    If AddMissingStyle("标题 3", wdStyleTypeParagraph, objStyle) Then
         With objStyle
             .BaseStyle = wdStyleNormal
             .NextParagraphStyle = "论文正文"
@@ -1633,6 +1634,7 @@ Private Sub CheckEnsureStyles()
             .ParagraphFormat.OutlineLevel = wdOutlineLevel3
             .ParagraphFormat.LineSpacingRule = wdLineSpaceExactly
             .ParagraphFormat.LineSpacing = 20
+            .ParagraphFormat.LeftIndent = 0
             .ParagraphFormat.FirstLineIndent = 0
             .ParagraphFormat.Alignment = wdAlignParagraphLeft
             .Font.NameFarEast = "宋体"
@@ -1640,10 +1642,10 @@ Private Sub CheckEnsureStyles()
             .Font.Bold = True
             .Font.Size = 12
             .QuickStyle = True
-            ListGalleries(wdOutlineNumberGallery).ListTemplates(1).ListLevels(3).LinkedStyle = "论文标题3"
+            ListGalleries(wdOutlineNumberGallery).ListTemplates(1).ListLevels(3).LinkedStyle = "标题 3"
         End With
     End If
-    If AddMissingStyle("论文标题4", wdStyleTypeParagraph, objStyle) Then
+    If AddMissingStyle("标题 4", wdStyleTypeParagraph, objStyle) Then
         With objStyle
             .BaseStyle = wdStyleNormal
             .NextParagraphStyle = "论文正文"
@@ -1654,6 +1656,7 @@ Private Sub CheckEnsureStyles()
             .ParagraphFormat.OutlineLevel = wdOutlineLevel4
             .ParagraphFormat.LineSpacingRule = wdLineSpaceExactly
             .ParagraphFormat.LineSpacing = 20
+            .ParagraphFormat.LeftIndent = 0
             .ParagraphFormat.FirstLineIndent = 0
             .ParagraphFormat.Alignment = wdAlignParagraphLeft
             .Font.NameFarEast = "宋体"
@@ -1661,10 +1664,10 @@ Private Sub CheckEnsureStyles()
             .Font.Bold = True
             .Font.Size = 12
             .QuickStyle = True
-            ListGalleries(wdOutlineNumberGallery).ListTemplates(1).ListLevels(4).LinkedStyle = "论文标题4"
+            ListGalleries(wdOutlineNumberGallery).ListTemplates(1).ListLevels(4).LinkedStyle = "标题 4"
         End With
     End If
-    If AddMissingStyle("论文标题5", wdStyleTypeParagraph, objStyle) Then
+    If AddMissingStyle("标题 5", wdStyleTypeParagraph, objStyle) Then
         With objStyle
             .BaseStyle = wdStyleNormal
             .NextParagraphStyle = "论文正文"
@@ -1674,6 +1677,7 @@ Private Sub CheckEnsureStyles()
             .ParagraphFormat.OutlineLevel = wdOutlineLevel5
             .ParagraphFormat.LineSpacingRule = wdLineSpaceExactly
             .ParagraphFormat.LineSpacing = 20
+            .ParagraphFormat.LeftIndent = 0
             .ParagraphFormat.FirstLineIndent = 0
             .ParagraphFormat.Alignment = wdAlignParagraphLeft
             .Font.NameFarEast = "宋体"
@@ -1681,10 +1685,10 @@ Private Sub CheckEnsureStyles()
             .Font.Bold = True
             .Font.Size = 12
             .QuickStyle = True
-            ListGalleries(wdOutlineNumberGallery).ListTemplates(1).ListLevels(5).LinkedStyle = "论文标题5"
+            ListGalleries(wdOutlineNumberGallery).ListTemplates(1).ListLevels(5).LinkedStyle = "标题 5"
         End With
     End If
-    If AddMissingStyle("论文标题6", wdStyleTypeParagraph, objStyle) Then
+    If AddMissingStyle("标题 6", wdStyleTypeParagraph, objStyle) Then
         With objStyle
             .BaseStyle = wdStyleNormal
             .NextParagraphStyle = "论文正文"
@@ -1694,6 +1698,7 @@ Private Sub CheckEnsureStyles()
             .ParagraphFormat.OutlineLevel = wdOutlineLevel6
             .ParagraphFormat.LineSpacingRule = wdLineSpaceExactly
             .ParagraphFormat.LineSpacing = 20
+            .ParagraphFormat.LeftIndent = 0
             .ParagraphFormat.FirstLineIndent = 0
             .ParagraphFormat.Alignment = wdAlignParagraphLeft
             .Font.NameFarEast = "宋体"
@@ -1701,7 +1706,7 @@ Private Sub CheckEnsureStyles()
             .Font.Bold = False
             .Font.Size = 12
             .QuickStyle = True
-            ListGalleries(wdOutlineNumberGallery).ListTemplates(1).ListLevels(6).LinkedStyle = "论文标题6"
+            ListGalleries(wdOutlineNumberGallery).ListTemplates(1).ListLevels(6).LinkedStyle = "标题 6"
         End With
     End If
     If AddMissingStyle("论文无序列表", wdStyleTypeParagraph, objStyle) Then
@@ -1712,6 +1717,7 @@ Private Sub CheckEnsureStyles()
             .ParagraphFormat.SpaceBefore = 0
             .ParagraphFormat.SpaceAfter = 0
             .Font.Bold = False
+            .ParagraphFormat.LeftIndent = 0
             .ParagraphFormat.LineSpacingRule = wdLineSpaceExactly
             .ParagraphFormat.LineSpacing = 20
             With ListGalleries(wdBulletGallery).ListTemplates(1).ListLevels(1)
@@ -1746,7 +1752,7 @@ Private Sub CheckEnsureStyles()
                 .NumberPosition = CentimetersToPoints(0.85)
                 .Alignment = wdListLevelAlignLeft
                 .TextPosition = CentimetersToPoints(0)
-                '                .TabPosition = wdUndefined
+                '.TabPosition = wdUndefined
                 .ResetOnHigher = 0
                 .StartAt = 1
                 .Font.name = "Times New Roman"
@@ -1763,6 +1769,7 @@ Private Sub CheckEnsureStyles()
             .ParagraphFormat.SpaceBefore = 0
             .ParagraphFormat.SpaceAfter = 0
             .Font.Bold = False
+            .ParagraphFormat.LeftIndent = 0
             .ParagraphFormat.LineSpacingRule = wdLineSpaceExactly
             .ParagraphFormat.LineSpacing = 20
             With ListGalleries(wdNumberGallery).ListTemplates(7).ListLevels(1)
