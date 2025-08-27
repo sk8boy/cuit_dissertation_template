@@ -13,8 +13,12 @@
                         onAction="UpdatePages_RibbonFun" />
                     <button id="RemoveSapces" label="删除多余空格" size="large" 
                         imageMso="QueryDelete"
-                        supertip="删除中英文字符以及中文字符间的多余空格（不会删除英文间的空格）"
+                        supertip="在选中段落或整个文档中，删除中英文字符间、段落开始前、段落结束后、中文标点前后的空格（不会删除英文间的空格）"
                         onAction="RemoveSpaces_RibbonFun" />
+                    <button id="ReplacePunctuation" label="替换英文标点" size="large" 
+                        imageMso="FontsReplaceFonts"
+                        supertip="在选中段落或整个文档中，使用中文标点替换中文字符间的英文标点"
+                        onAction="ReplacePunctuationInChinese_RibbonFun" />
                 </group>
                 <group id="Number" label="题注相关" autoScale="true">
                     <button id="InsertPicNo" label="插入图编号" size="large" 

@@ -14,7 +14,7 @@ Public otherTeacherTitle As String
 Public mathTypeFound As Boolean
 Public axMathFound As Boolean
 
-Const Version = "v1.4.0"
+Const Version = "v1.4.1"
 
 Const TEXT_GithubUrl = "https://github.com/sk8boy/cuit_dissertation_template"
 Const TEXT_GiteeUrl = "https://gitee.com/tiejunwang/cuit_dissertation_template"
@@ -4041,48 +4041,168 @@ errHandle:
     End If
 End Sub
 
+' 在选中段落或整个文档中，删除中英文字符间、段落开始前、段落结束后、中文标点前后的空格（不会删除英文间的空格）
 Public Sub RemoveSpaces_RibbonFun(ByVal control As IRibbonControl)
-    Dim rng As Range
-    Dim i As Long, j As Long, k As Long
-    Dim prevChar As String, nextChar As String
-    Dim isChinesePrev As Boolean, isChineseNext As Boolean, foundSpace As Boolean
+    Dim myRange As Range
+    Dim response As VbMsgBoxResult
     Dim ur As UndoRecord
     
     On Error GoTo ERROR_HANDLER
     Set ur = Application.UndoRecord
-    ur.StartCustomRecord "删除中英文字符间的空格"
-
-    Set rng = Selection.Range
-    If rng.text = "" Then
-        Exit Sub
-    End If
+    ur.StartCustomRecord "删除多余空格"
     
-    ' 从后往前处理避免索引变化
-    For i = rng.Characters.Count - 1 To 2 Step -1
-        j = i
-        Do While rng.Characters(j).text = " "
-            j = j - 1
-            foundSpace = True
-        Loop
-        
-        If foundSpace Then
-            prevChar = rng.Characters(j).text
-            nextChar = rng.Characters(i + 1).text
-            
-            isChinesePrev = IsChineseCharacter(prevChar)
-            isChineseNext = IsChineseCharacter(nextChar)
-            
-            ' 如果两端不同或者都为中文，则删除连续的空格
-            If (isChinesePrev <> isChineseNext) Or (isChinesePrev And isChineseNext) Then
-                For k = i To j + 1 Step -1
-                    rng.Characters(k).text = ""
-                Next k
-            End If
-            i = j + 1
-            foundSpace = False
+    ' 判断是否有选中文本
+    If Selection.Type <> wdSelectionIP Then
+        ' 如果有选中文本，只在选区内操作
+        Set myRange = Selection.Range
+    Else
+        ' 如果没有选中文本，在整个文档操作
+        Set myRange = ActiveDocument.Content
+        Response = MsgBox("没有选中文本，将在整个文档中清理空格。" & vbCrLf & _
+                         "是否继续？", vbQuestion + vbYesNoCancel, "确认继续操作")
+        ' 检查用户选择
+        If Response = vbCancel Or Response = vbNo Then
+            ur.EndCustomRecord
+            Exit Sub
         End If
-    Next i
+    End If
 
+    ' 删除中文文本中英文单词间的空格（中英文混排时）
+    With myRange.Find
+        .ClearFormatting
+        .Replacement.ClearFormatting
+        .Text = "([!一-龠 ，。！？；：（）【】《》、“”‘’])([ ]@)([一-龠，。！？；：“”‘’（）【】《》、])"  ' 非中文字母字符+空格+中文字符
+        .Replacement.Text = "\1\3"  ' 删除空格
+        .Forward = True
+        .Wrap = wdFindContinue
+        .Format = False
+        .MatchCase = False
+        .MatchWholeWord = False
+        .MatchWildcards = True
+        .MatchSoundsLike = False
+        .MatchAllWordForms = False
+        .Execute Replace:=wdReplaceAll
+    End With
+    
+    With myRange.Find
+        .ClearFormatting
+        .Replacement.ClearFormatting
+        .Text = "([一-龠，。！？；：（）【】《》、“”‘’])([ ]@)([!一-龠 ，。！？；：“”‘’（）【】《》、])"  ' 中文字符+空格+非中文字母字符
+        .Replacement.Text = "\1\3"  ' 删除空格
+        .Forward = True
+        .Wrap = wdFindContinue
+        .Format = False
+        .MatchCase = False
+        .MatchWholeWord = False
+        .MatchWildcards = True
+        .MatchSoundsLike = False
+        .MatchAllWordForms = False
+        .Execute Replace:=wdReplaceAll
+    End With
+    
+    ' 删除中文标点符号前的空格
+    With myRange.Find
+        .ClearFormatting
+        .Replacement.ClearFormatting
+        .Text = "([ ]@)([，。！？；：（）【】《》、“”‘’])"  ' 空格+中文标点
+        .Replacement.Text = "\2"  ' 删除空格
+        .Forward = True
+        .Wrap = wdFindContinue
+        .Format = False
+        .MatchCase = False
+        .MatchWholeWord = False
+        .MatchWildcards = True
+        .MatchSoundsLike = False
+        .MatchAllWordForms = False
+        .Execute Replace:=wdReplaceAll
+    End With
+    
+    ' 删除中文标点符号后的空格（除了某些英文标点后可能需要空格的情况）
+    With myRange.Find
+        .ClearFormatting
+        .Replacement.ClearFormatting
+        .Text = "([，。！？；：（）【】《》、“”‘’])([ ]@)"  ' 中文标点+空格
+        .Replacement.Text = "\1"  ' 删除空格
+        .Forward = True
+        .Wrap = wdFindContinue
+        .Format = False
+        .MatchCase = False
+        .MatchWholeWord = False
+        .MatchWildcards = True
+        .MatchSoundsLike = False
+        .MatchAllWordForms = False
+        .Execute Replace:=wdReplaceAll
+    End With
+    
+    ' 删除行首空格
+    With myRange.Find
+        .ClearFormatting
+        .Replacement.ClearFormatting
+        .Text = "^13[ ]@"  ' 段落标记后的空格
+        .Replacement.Text = "^13"  ' 只保留段落标记
+        .Forward = True
+        .Wrap = wdFindContinue
+        .Format = False
+        .MatchCase = False
+        .MatchWholeWord = False
+        .MatchWildcards = True
+        .MatchSoundsLike = False
+        .MatchAllWordForms = False
+        .Execute Replace:=wdReplaceAll
+    End With
+    
+    ' 删除行尾空格
+    With myRange.Find
+        .ClearFormatting
+        .Replacement.ClearFormatting
+        .Text = "[ ]@^13"  ' 空格+段落标记
+        .Replacement.Text = "^13"  ' 只保留段落标记
+        .Forward = True
+        .Wrap = wdFindContinue
+        .Format = False
+        .MatchCase = False
+        .MatchWholeWord = False
+        .MatchWildcards = True
+        .MatchSoundsLike = False
+        .MatchAllWordForms = False
+        .Execute Replace:=wdReplaceAll
+    End With
+    
+        ' 删除行首空格
+    With myRange.Find
+        .ClearFormatting
+        .Replacement.ClearFormatting
+        .Text = "^l[ ]@"  ' 段落标记后的空格
+        .Replacement.Text = "^l"  ' 只保留段落标记
+        .Forward = True
+        .Wrap = wdFindContinue
+        .Format = False
+        .MatchCase = False
+        .MatchWholeWord = False
+        .MatchWildcards = True
+        .MatchSoundsLike = False
+        .MatchAllWordForms = False
+        .Execute Replace:=wdReplaceAll
+    End With
+    
+    ' 删除行尾空格
+    With myRange.Find
+        .ClearFormatting
+        .Replacement.ClearFormatting
+        .Text = "[ ]@^l"  ' 空格+段落标记
+        .Replacement.Text = "^l"  ' 只保留段落标记
+        .Forward = True
+        .Wrap = wdFindContinue
+        .Format = False
+        .MatchCase = False
+        .MatchWholeWord = False
+        .MatchWildcards = True
+        .MatchSoundsLike = False
+        .MatchAllWordForms = False
+        .Execute Replace:=wdReplaceAll
+    End With
+    
+    MsgBox "多余空格清理完成！"
     Application.ScreenRefresh
     ur.EndCustomRecord
     Exit Sub ' 正常退出点，避免进入错误处理程序
@@ -4092,20 +4212,60 @@ ERROR_HANDLER:
     If Not (ur Is Nothing) Then ur.EndCustomRecord
 End Sub
 
-' 辅助函数：判断是否为中文字符
-Private Function IsChineseCharacter(char As String) As Boolean
-    Dim charCode As Long
+' 在选中段落或整个文档中，使用中文标点替换中文字符间的英文标点
+Sub ReplacePunctuationInChinese_RibbonFun(ByVal control As IRibbonControl)
+    Dim myRange As Range
+    Dim response As VbMsgBoxResult
+    Dim ur As UndoRecord
     
-    charCode = AscW(char)
-    If charCode < 0 Then charCode = charCode And 65535
-    ' 基本汉字 + 标点 + 全角符号 + 扩展汉字
-    If (charCode >= CLng(&H4E00) And charCode <= (CLng(&H9FFF) And 65535)) Or _
-       (charCode >= CLng(&H3000) And charCode <= CLng(&H303F)) Or _
-       (charCode >= (CLng(&HFF00) And 65535) And charCode <= (CLng(&HFFEF) And 65535)) Or _
-       (charCode >= CLng(&H3400) And charCode <= CLng(&H4DBF)) Or _
-       (charCode >= CLng(&H20000) And charCode <= CLng(&H2FFFF)) Then
-        IsChineseCharacter = True
+    On Error GoTo ERROR_HANDLER
+    Set ur = Application.UndoRecord
+    ur.StartCustomRecord "替换英文标点"
+    
+    ' 判断是否有选中文本
+    If Selection.Type <> wdSelectionIP Then
+        Set myRange = Selection.Range
     Else
-        IsChineseCharacter = False
+        Set myRange = ActiveDocument.Content
+        Response = MsgBox("没有选中文本，将在整个文档中替换英文标点。" & vbCrLf & _
+                         "是否继续？", vbQuestion + vbYesNoCancel, "确认继续操作")
+        ' 检查用户选择
+        If Response = vbCancel Or Response = vbNo Then
+            ur.EndCustomRecord
+            Exit Sub
+        End If
     End If
-End Function
+    
+    ' 定义要替换的标点对
+    Dim punctPairs As Variant
+    punctPairs = Array( _
+        ",", "，", _
+        ".", "。", _
+        "\?", "？", _
+        "\!", "！", _
+        ":", "：", _
+        ";", "；" _
+    )
+    
+    ' 逐个替换标点（在中文字符上下文中的）
+    Dim i As Long
+    For i = LBound(punctPairs) To UBound(punctPairs) Step 2
+        With myRange.Find
+            .ClearFormatting
+            .replacement.ClearFormatting
+            .text = "([一-龠])(" & punctPairs(i) & ")([一-龠])"
+            .replacement.text = "\1" & punctPairs(i + 1) & "\3"
+            .MatchWildcards = True
+            .Execute Replace:=wdReplaceAll
+        End With
+    Next i
+    
+    MsgBox "标点替换完成！", vbInformation
+    Application.ScreenRefresh
+    ur.EndCustomRecord
+    Exit Sub ' 正常退出点，避免进入错误处理程序
+    
+ERROR_HANDLER:
+    MsgBox "发生错误: " & vbCrLf & vbCrLf & Err.Description, vbCritical, C_TITLE
+    If Not (ur Is Nothing) Then ur.EndCustomRecord
+End Sub
