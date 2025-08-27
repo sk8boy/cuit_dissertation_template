@@ -14,7 +14,7 @@ Public otherTeacherTitle As String
 Public mathTypeFound As Boolean
 Public axMathFound As Boolean
 
-Const Version = "v1.4.1"
+Const Version = "v1.4.2"
 
 Const TEXT_GithubUrl = "https://github.com/sk8boy/cuit_dissertation_template"
 Const TEXT_GiteeUrl = "https://gitee.com/tiejunwang/cuit_dissertation_template"
@@ -4213,7 +4213,7 @@ ERROR_HANDLER:
 End Sub
 
 ' 在选中段落或整个文档中，使用中文标点替换中文字符间的英文标点
-Sub ReplacePunctuationInChinese_RibbonFun(ByVal control As IRibbonControl)
+Public Sub ReplacePunctuationInChinese_RibbonFun(ByVal control As IRibbonControl)
     Dim myRange As Range
     Dim response As VbMsgBoxResult
     Dim ur As UndoRecord
@@ -4269,3 +4269,140 @@ ERROR_HANDLER:
     MsgBox "发生错误: " & vbCrLf & vbCrLf & Err.Description, vbCritical, C_TITLE
     If Not (ur Is Nothing) Then ur.EndCustomRecord
 End Sub
+
+Public Sub CheckUpdate_RibbonFun(ByVal control As IRibbonControl)
+    Dim http As Object
+    Dim url As String
+    Dim response As String
+    Dim latestVersion As String
+    Dim currentVersion As String
+    Dim json As Object
+    
+    ' 设置当前版本和项目版本库信息
+    currentVersion = Mid$(Version, 2) ' 当前版本号
+    Dim repoOwner As String
+    Dim repoName As String
+    'repoOwner = "sk8boy"      ' GitHub用户名
+    repoOwner = "tiejunwang"      ' Gitee用户名
+    repoName = "cuit_dissertation_template"  ' 仓库名称
+    
+    On Error GoTo ErrorHandler
+    
+    ' 创建HTTP对象
+    Set http = CreateObject("MSXML2.XMLHTTP")
+    
+    ' GitHub API URL - 获取最新发布版本
+    'url = "https://api.github.com/repos/" & repoOwner & "/" & repoName & "/releases/latest"
+    url = "https://gitee.com/api/v5/repos/" & repoOwner & "/" & repoName & "/releases/latest"
+    
+    ' 发送GET请求
+    With http
+        .Open "GET", url, False
+        .setRequestHeader "Content-Type", "application/json"
+        .setRequestHeader "User-Agent", "VBA-GitHub-Updater" ' GitHub要求User-Agent
+        .send
+    End With
+    
+    ' 检查响应状态
+    If http.Status <> 200 Then
+        MsgBox "无法连接到GitHub: HTTP " & http.Status, vbExclamation
+        Exit Sub
+    End If
+    
+    ' 获取响应内容
+    response = http.responseText
+    
+    ' 解析JSON响应（简单文本处理方式）
+    latestVersion = ExtractVersionFromJSON(response)
+
+    If latestVersion = "" Then
+        MsgBox "无法解析版本信息", vbExclamation
+        Exit Sub
+    End If
+    
+    ' 比较版本
+    If CompareVersions(latestVersion, currentVersion) > 0 Then
+        ' 有新版本
+        Dim userChoice As VbMsgBoxResult
+        userChoice = MsgBox("发现新版本: " & latestVersion & vbCrLf & _
+                           "当前版本: " & currentVersion & vbCrLf & vbCrLf & _
+                           "是否打开Gitee发布页面？", vbQuestion + vbYesNo, "发现更新")
+        
+        If userChoice = vbYes Then
+            ' 打开浏览器前往发布页面
+            'Shell "explorer.exe " & "https://github.com/" & repoOwner & "/" & repoName & "/releases/latest"
+            Shell "explorer.exe " & "https://gitee.com/" & repoOwner & "/" & repoName & "/releases/latest"
+        End If
+    Else
+        MsgBox "当前已是最新版本: " & currentVersion, vbInformation
+    End If
+    
+    Exit Sub
+    
+ErrorHandler:
+    MsgBox "检查更新时出错: " & vbCrLf & vbCrLf & Err.Description, vbCritical, C_TITLE
+End Sub
+
+' 从JSON响应中提取版本号
+Private Function ExtractVersionFromJSON(jsonText As String) As String
+    Dim versionTag As String
+    Dim startPos As Long
+    Dim endPos As Long
+    
+    ' 查找 "tag_name" 字段
+    startPos = InStr(1, jsonText, """tag_name"":""")
+    If startPos > 0 Then
+        startPos = startPos + Len("""tag_name"":""")
+        endPos = InStr(startPos, jsonText, """")
+        If endPos > startPos Then
+            versionTag = Mid(jsonText, startPos, endPos - startPos)
+            ' 移除可能的"v"前缀
+            If Left(versionTag, 1) = "v" Then
+                versionTag = Mid(versionTag, 2)
+            End If
+            ExtractVersionFromJSON = versionTag
+        End If
+    End If
+End Function
+
+' 比较版本号 (返回: 1=version1>version2, 0=相等, -1=version1<version2)
+Private Function CompareVersions(version1 As String, version2 As String) As Integer
+    Dim v1Parts() As String
+    Dim v2Parts() As String
+    Dim i As Integer
+    
+    ' 分割版本号
+    v1Parts = Split(version1, ".")
+    v2Parts = Split(version2, ".")
+    
+    ' 比较每个部分
+    For i = 0 To IIf(UBound(v1Parts) > UBound(v2Parts), UBound(v1Parts), UBound(v2Parts))
+        Dim v1Part As Long
+        Dim v2Part As Long
+        
+        ' 获取当前部分，如果不存在则设为0
+        If i <= UBound(v1Parts) Then
+            v1Part = val(v1Parts(i))
+        Else
+            v1Part = 0
+        End If
+        
+        If i <= UBound(v2Parts) Then
+            v2Part = val(v2Parts(i))
+        Else
+            v2Part = 0
+        End If
+        
+        ' 比较
+        If v1Part > v2Part Then
+            CompareVersions = 1
+            Exit Function
+        ElseIf v1Part < v2Part Then
+            CompareVersions = -1
+            Exit Function
+        End If
+    Next i
+    
+    ' 所有部分都相等
+    CompareVersions = 0
+End Function
