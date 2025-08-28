@@ -41,7 +41,9 @@ Public Sub UpdatePages_RibbonFun(ByVal control As IRibbonControl)
     
     ' 设置搜索条件
     keyword = InputBox(prompt:="正文起始章节标题", title:="请输入正文起始章节的标题", Default:="绪论")
-    
+
+    If keyword = "" Then Exit Sub
+
     ' 初始化搜索范围
     Set rng = ActiveDocument.Content
     rng.Find.ClearFormatting
@@ -78,7 +80,7 @@ Public Sub UpdatePages_RibbonFun(ByVal control As IRibbonControl)
     Exit Sub ' 正常退出点，避免进入错误处理程序
     
 ERROR_HANDLER:
-    MsgBox "更新论文正文页数时出错: " & vbCrLf & vbCrLf & Err.Description, vbCritical, C_TITLE
+    ShowErrorMsg Err, "更新论文正文页数时出错: "
     If Not (ur Is Nothing) Then ur.EndCustomRecord
 End Sub
 
@@ -167,7 +169,6 @@ Public Sub InsertChapterSep(ByVal control As IRibbonControl)
     
 End Sub
 
-
 ' 辅助函数：获取SEQ字段的当前值
 Private Function GetSEQValue(seqIdentifier As String) As Integer
     Dim doc As Document
@@ -238,7 +239,7 @@ Public Sub InsertPicNo_RibbonFun(ByVal control As IRibbonControl)
     Exit Sub ' 正常退出点，避免进入错误处理程序
     
 ERROR_HANDLER:
-    MsgBox "发生错误: " & vbCrLf & vbCrLf & Err.Description, vbCritical, C_TITLE
+    ShowErrorMsg Err, "插入图编号时发生错误: "
     If Not (ur Is Nothing) Then ur.EndCustomRecord
 End Sub
 
@@ -270,7 +271,7 @@ Public Sub InsertTblNo_RibbonFun(ByVal control As IRibbonControl)
     Exit Sub ' 正常退出点，避免进入错误处理程序
     
 ERROR_HANDLER:
-    MsgBox "发生错误: " & vbCrLf & vbCrLf & Err.Description, vbCritical, C_TITLE
+    ShowErrorMsg Err, "插入表编号时发生错误: "
     If Not (ur Is Nothing) Then ur.EndCustomRecord
 End Sub
 
@@ -311,7 +312,7 @@ Public Sub InsertDefNo_RibbonFun(ByVal control As IRibbonControl)
     Exit Sub ' 正常退出点，避免进入错误处理程序
     
 ERROR_HANDLER:
-    MsgBox "发生错误: " & vbCrLf & vbCrLf & Err.Description, vbCritical, C_TITLE
+    ShowErrorMsg Err, "插入自定义编号时发生错误: "
     If Not (ur Is Nothing) Then ur.EndCustomRecord
 End Sub
 
@@ -354,7 +355,7 @@ Public Sub InsertTheoremNo_RibbonFun(ByVal control As IRibbonControl)
     Exit Sub ' 正常退出点，避免进入错误处理程序
     
 ERROR_HANDLER:
-    MsgBox "发生错误: " & vbCrLf & vbCrLf & Err.Description, vbCritical, C_TITLE
+    ShowErrorMsg Err, "插入定理编号时发生错误: "
     If Not (ur Is Nothing) Then ur.EndCustomRecord
 End Sub
 
@@ -397,7 +398,7 @@ Public Sub InsertCorollaryNo_RibbonFun(ByVal control As IRibbonControl)
     Exit Sub ' 正常退出点，避免进入错误处理程序
     
 ERROR_HANDLER:
-    MsgBox "发生错误: " & vbCrLf & vbCrLf & Err.Description, vbCritical, C_TITLE
+    ShowErrorMsg Err, "插入推论编号时发生错误: "
     If Not (ur Is Nothing) Then ur.EndCustomRecord
 End Sub
 
@@ -440,7 +441,7 @@ Public Sub InsertLemmaNo_RibbonFun(ByVal control As IRibbonControl)
     Exit Sub ' 正常退出点，避免进入错误处理程序
     
 ERROR_HANDLER:
-    MsgBox "发生错误: " & vbCrLf & vbCrLf & Err.Description, vbCritical, C_TITLE
+    ShowErrorMsg Err, "插入引理编号时发生错误: "
     If Not (ur Is Nothing) Then ur.EndCustomRecord
 End Sub
 
@@ -483,7 +484,7 @@ Public Sub InsertProblemNo_RibbonFun(ByVal control As IRibbonControl)
     Exit Sub ' 正常退出点，避免进入错误处理程序
     
 ERROR_HANDLER:
-    MsgBox "发生错误: " & vbCrLf & vbCrLf & Err.Description, vbCritical, C_TITLE
+    ShowErrorMsg Err, "插入问题编号时发生错误: "
     If Not (ur Is Nothing) Then ur.EndCustomRecord
 End Sub
 
@@ -526,7 +527,7 @@ Public Sub InsertConclusionNo_RibbonFun(ByVal control As IRibbonControl)
     Exit Sub ' 正常退出点，避免进入错误处理程序
     
 ERROR_HANDLER:
-    MsgBox "发生错误: " & vbCrLf & vbCrLf & Err.Description, vbCritical, C_TITLE
+    ShowErrorMsg Err, "插入结论编号时发生错误: "
     If Not (ur Is Nothing) Then ur.EndCustomRecord
 End Sub
 
@@ -606,8 +607,9 @@ Public Sub InsertAlgorithmTbl_RibbonFun(ByVal control As IRibbonControl)
     End With
     ur.EndCustomRecord
     Exit Sub
+
 ERROR_HANDLER:
-    MsgBox "发生错误: " & vbCrLf & vbCrLf & Err.Description, vbCritical, C_TITLE
+    ShowErrorMsg Err, "插入算法时发生错误: "
     If Not (ur Is Nothing) Then ur.EndCustomRecord
 End Sub
 
@@ -647,7 +649,7 @@ Private Sub InsertAlgorithmNo()
     Exit Sub ' 正常退出点，避免进入错误处理程序
     
 ERROR_HANDLER:
-    MsgBox "发生错误: " & vbCrLf & vbCrLf & Err.Description, vbCritical, C_TITLE
+    ShowErrorMsg Err, "插入算法编号时发生错误: "
     If Not (ur Is Nothing) Then ur.EndCustomRecord
 End Sub
 
@@ -670,11 +672,7 @@ Public Sub H1_RibbonFun(control As IRibbonControl)
     Exit Sub ' 正常退出点，避免进入错误处理程序
     
 ERROR_HANDLER:
-    If Err.Number = ERR_USRMSG Then
-        MsgBox Err.Description, vbExclamation, C_TITLE
-    ElseIf Err.Number <> ERR_CANCEL Then
-        MsgBox "应用标题1样式时发生错误: " & Err.Description, vbCritical, C_TITLE
-    End If
+    ShowErrorMsg Err, "应用标题1样式时发生错误: "
     If Not (ur Is Nothing) Then ur.EndCustomRecord
 End Sub
 
@@ -692,11 +690,7 @@ Public Sub H2_RibbonFun(control As IRibbonControl)
     Exit Sub ' 正常退出点，避免进入错误处理程序
     
 ERROR_HANDLER:
-    If Err.Number = ERR_USRMSG Then
-        MsgBox Err.Description, vbExclamation, C_TITLE
-    ElseIf Err.Number <> ERR_CANCEL Then
-        MsgBox "应用标题2样式时发生错误: " & Err.Description, vbCritical, C_TITLE
-    End If
+    ShowErrorMsg Err, "应用标题2样式时发生错误: "
     If Not (ur Is Nothing) Then ur.EndCustomRecord
 End Sub
 
@@ -726,11 +720,7 @@ Public Sub H3_RibbonFun(control As IRibbonControl)
     Exit Sub ' 正常退出点，避免进入错误处理程序
     
 ERROR_HANDLER:
-    If Err.Number = ERR_USRMSG Then
-        MsgBox Err.Description, vbExclamation, C_TITLE
-    ElseIf Err.Number <> ERR_CANCEL Then
-        MsgBox "应用标题3样式时发生错误: " & Err.Description, vbCritical, C_TITLE
-    End If
+    ShowErrorMsg Err, "应用标题3样式时发生错误: "
     If Not (ur Is Nothing) Then ur.EndCustomRecord
 End Sub
 
@@ -760,11 +750,7 @@ Public Sub H4_RibbonFun(control As IRibbonControl)
     Exit Sub ' 正常退出点，避免进入错误处理程序
     
 ERROR_HANDLER:
-    If Err.Number = ERR_USRMSG Then
-        MsgBox Err.Description, vbExclamation, C_TITLE
-    ElseIf Err.Number <> ERR_CANCEL Then
-        MsgBox "应用标题4样式时发生错误: " & Err.Description, vbCritical, C_TITLE
-    End If
+    ShowErrorMsg Err, "应用标题4样式时发生错误: "
     If Not (ur Is Nothing) Then ur.EndCustomRecord
 End Sub
 
@@ -794,11 +780,7 @@ Public Sub H5_RibbonFun(control As IRibbonControl)
     Exit Sub ' 正常退出点，避免进入错误处理程序
     
 ERROR_HANDLER:
-    If Err.Number = ERR_USRMSG Then
-        MsgBox Err.Description, vbExclamation, C_TITLE
-    ElseIf Err.Number <> ERR_CANCEL Then
-        MsgBox "应用标题5样式时发生错误: " & Err.Description, vbCritical, C_TITLE
-    End If
+    ShowErrorMsg Err, "应用标题5样式时发生错误: "
     If Not (ur Is Nothing) Then ur.EndCustomRecord
 End Sub
 
@@ -828,11 +810,7 @@ Public Sub H6_RibbonFun(control As IRibbonControl)
     Exit Sub ' 正常退出点，避免进入错误处理程序
     
 ERROR_HANDLER:
-    If Err.Number = ERR_USRMSG Then
-        MsgBox Err.Description, vbExclamation, C_TITLE
-    ElseIf Err.Number <> ERR_CANCEL Then
-        MsgBox "应用标题1样式时发生错误: " & Err.Description, vbCritical, C_TITLE
-    End If
+    ShowErrorMsg Err, "应用标题6样式时发生错误: "
     If Not (ur Is Nothing) Then ur.EndCustomRecord
 End Sub
 
@@ -852,11 +830,7 @@ Public Sub MakeBulletItem_RibbonFun(control As IRibbonControl)
     Exit Sub
     
 ERROR_HANDLER:
-    If Err.Number = ERR_USRMSG Then
-        MsgBox Err.Description, vbExclamation, C_TITLE
-    ElseIf Err.Number <> ERR_CANCEL Then
-        MsgBox "应用论文无序列表时出错: " & Err.Description, vbCritical, C_TITLE
-    End If
+    ShowErrorMsg Err, "应用无序列表样式时出错: "
     If Not (ur Is Nothing) Then ur.EndCustomRecord
 End Sub
 
@@ -876,11 +850,7 @@ Public Sub MakeNumNoIndentItem_RibbonFun(control As IRibbonControl)
     Exit Sub
     
 ERROR_HANDLER:
-    If Err.Number = ERR_USRMSG Then
-        MsgBox Err.Description, vbExclamation, C_TITLE
-    ElseIf Err.Number <> ERR_CANCEL Then
-        MsgBox "应用论文无缩序号时出错: " & Err.Description, vbCritical, C_TITLE
-    End If
+    ShowErrorMsg Err, "应用无缩序号样式时出错: "
     If Not (ur Is Nothing) Then ur.EndCustomRecord
 End Sub
 
@@ -903,11 +873,7 @@ Public Sub MakeNumItem_RibbonFun(control As IRibbonControl)
     Exit Sub
     
 ERROR_HANDLER:
-    If Err.Number = ERR_USRMSG Then
-        MsgBox Err.Description, vbExclamation, C_TITLE
-    ElseIf Err.Number <> ERR_CANCEL Then
-        MsgBox "应用论文有序列表时出错: " & Err.Description, vbCritical, C_TITLE
-    End If
+    ShowErrorMsg Err, "应用有序列表样式时出错: "
     If Not (ur Is Nothing) Then ur.EndCustomRecord
 End Sub
 
@@ -975,11 +941,7 @@ Public Sub ListLevelUp_RibbonFun(control As IRibbonControl)
     Exit Sub
     
 ERROR_HANDLER:
-    If Err.Number = ERR_USRMSG Then
-        MsgBox Err.Description, vbExclamation, C_TITLE
-    ElseIf Err.Number <> ERR_CANCEL Then
-        MsgBox "尝试提升列表级别时出错: " & Err.Description, vbCritical, C_TITLE
-    End If
+    ShowErrorMsg Err, "尝试提升列表级别时出错: "
     If Not (ur Is Nothing) Then ur.EndCustomRecord
 End Sub
 
@@ -1014,11 +976,7 @@ Public Sub ListLevelDown_RibbonFun(control As IRibbonControl)
     Exit Sub
     
 ERROR_HANDLER:
-    If Err.Number = ERR_USRMSG Then
-        MsgBox Err.Description, vbExclamation, C_TITLE
-    ElseIf Err.Number <> ERR_CANCEL Then
-        MsgBox "尝试降低列表级别时出错: " & Err.Description, vbCritical, C_TITLE
-    End If
+    ShowErrorMsg Err, "尝试降低列表级别时出错: "
     If Not (ur Is Nothing) Then ur.EndCustomRecord
 End Sub
 
@@ -1049,11 +1007,7 @@ Public Sub RestartNumbering_RibbonFun(control As IRibbonControl)
     Exit Sub
     
 ERROR_HANDLER:
-    If Err.Number = ERR_USRMSG Then
-        MsgBox Err.Description, vbExclamation, C_TITLE
-    ElseIf Err.Number <> ERR_CANCEL Then
-        MsgBox "切换序号时出错: " & Err.Description & vbCrLf & "(当使用自定义序号时，该功能可能会失效)", vbCritical, C_TITLE
-    End If
+    ShowErrorMsg Err, "切换序号时出错: "
     If Not (ur Is Nothing) Then ur.EndCustomRecord
 End Sub
 
@@ -1105,7 +1059,7 @@ Public Sub RestorePageSetup()
     Exit Sub ' 正常退出点，避免进入错误处理程序
     
 ERROR_HANDLER:
-    MsgBox "检查页面设置时发生错误: " & vbCrLf & vbCrLf & Err.Description, vbCritical, C_TITLE
+    ShowErrorMsg Err, "检查论文页面设置时发生错误: "
     If Not (ur Is Nothing) Then ur.EndCustomRecord
 End Sub
 
@@ -1798,7 +1752,7 @@ Private Sub CheckEnsureStyles()
     Exit Sub ' 正常退出点，避免进入错误处理程序
     
 ERROR_HANDLER:
-    MsgBox "检查并恢复缺失的样式时出错: " & vbCrLf & vbCrLf & Err.Description, vbCritical, C_TITLE
+    ShowErrorMsg Err, "检查并恢复缺失的样式时出错: "
     If Not (ur Is Nothing) Then ur.EndCustomRecord
 End Sub
 
@@ -1920,11 +1874,8 @@ Private Function ApplyParaStyle(ByVal StyleName As String, ByVal BuiltInStyleID 
     Exit Function
     
 ERROR_HANDLER:
-    If Err.Number = ERR_USRMSG Then
-        MsgBox Err.Description, vbExclamation, C_TITLE
-    ElseIf Err.Number <> ERR_CANCEL Then
-        MsgBox "应用段落样式时发生错误: " & Err.Description, vbCritical, C_TITLE
-    End If
+    ShowErrorMsg Err, "应用段落样式时发生错误: "
+    If Not (ur Is Nothing) Then ur.EndCustomRecord
 End Function
 
 Private Function ApplyCharStyle(ByVal StyleName As String, ByVal BuiltInStyleID As Integer) As Boolean
@@ -1956,11 +1907,8 @@ Private Function ApplyCharStyle(ByVal StyleName As String, ByVal BuiltInStyleID 
     Exit Function
     
 ERROR_HANDLER:
-    If Err.Number = ERR_USRMSG Then
-        MsgBox Err.Description, vbExclamation, C_TITLE
-    ElseIf Err.Number <> ERR_CANCEL Then
-        MsgBox "应用字符样式时发生错误: " & Err.Description, vbCritical, C_TITLE
-    End If
+    ShowErrorMsg Err, "应用字符样式时发生错误: "
+    If Not (ur Is Nothing) Then ur.EndCustomRecord
 End Function
 
 Public Sub MakeStandard_RibbonFun(control As IRibbonControl)
@@ -2017,11 +1965,7 @@ Public Sub MakeStandard_RibbonFun(control As IRibbonControl)
     Exit Sub ' 正常退出点，避免进入错误处理程序
     
 ERROR_HANDLER:
-    If Err.Number = ERR_USRMSG Then
-        MsgBox Err.Description, vbExclamation, C_TITLE
-    ElseIf Err.Number <> ERR_CANCEL Then
-        MsgBox "应用正文样式时发生错误: " & Err.Description, vbCritical, C_TITLE
-    End If
+    ShowErrorMsg Err, "应用正文样式时发生错误: "
     If Not (ur Is Nothing) Then ur.EndCustomRecord
 End Sub
 
@@ -2864,11 +2808,7 @@ CleanExit:
     Exit Function
     
 ERROR_HANDLER:
-    If Err.Number = ERR_USRMSG Then
-        MsgBox Err.Description, vbExclamation, C_TITLE
-    ElseIf Err.Number <> ERR_CANCEL Then
-        MsgBox "插入交叉引用时发生错误: " & Err.Description, vbCritical, C_TITLE
-    End If
+    ShowErrorMsg Err, "插入交叉引用时发生错误: "
     If Not (ur Is Nothing) Then ur.EndCustomRecord
 End Function
 
@@ -4208,7 +4148,7 @@ Public Sub RemoveSpaces_RibbonFun(ByVal control As IRibbonControl)
     Exit Sub ' 正常退出点，避免进入错误处理程序
     
 ERROR_HANDLER:
-    MsgBox "发生错误: " & vbCrLf & vbCrLf & Err.Description, vbCritical, C_TITLE
+    ShowErrorMsg Err, "删除多余空格时发生错误: "
     If Not (ur Is Nothing) Then ur.EndCustomRecord
 End Sub
 
@@ -4266,7 +4206,7 @@ Public Sub ReplacePunctuationInChinese_RibbonFun(ByVal control As IRibbonControl
     Exit Sub ' 正常退出点，避免进入错误处理程序
     
 ERROR_HANDLER:
-    MsgBox "发生错误: " & vbCrLf & vbCrLf & Err.Description, vbCritical, C_TITLE
+    ShowErrorMsg Err, "替换英文标点时发生错误: "
     If Not (ur Is Nothing) Then ur.EndCustomRecord
 End Sub
 
@@ -4286,7 +4226,7 @@ Public Sub CheckUpdate_RibbonFun(ByVal control As IRibbonControl)
     repoOwner = "tiejunwang"      ' Gitee用户名
     repoName = "cuit_dissertation_template"  ' 仓库名称
     
-    On Error GoTo ErrorHandler
+    On Error GoTo ERROR_HANDLER
     
     ' 创建HTTP对象
     Set http = CreateObject("MSXML2.XMLHTTP")
@@ -4339,8 +4279,9 @@ Public Sub CheckUpdate_RibbonFun(ByVal control As IRibbonControl)
     
     Exit Sub
     
-ErrorHandler:
-    MsgBox "检查更新时出错: " & vbCrLf & vbCrLf & Err.Description, vbCritical, C_TITLE
+ERROR_HANDLER:
+    ShowErrorMsg Err, "检查模板更新时出错: "
+    If Not (ur Is Nothing) Then ur.EndCustomRecord
 End Sub
 
 ' 从JSON响应中提取版本号
@@ -4406,3 +4347,11 @@ Private Function CompareVersions(version1 As String, version2 As String) As Inte
     ' 所有部分都相等
     CompareVersions = 0
 End Function
+
+Private Sub ShowErrorMsg(err As ErrObject, msg As String)
+    If err.Number = ERR_USRMSG Then
+        MsgBox err.Description, vbExclamation, C_TITLE
+    ElseIf err.Number <> ERR_CANCEL Then
+        MsgBox msg & vbCrLf & vbCrLf & err.Description, vbCritical, C_TITLE
+    End If
+End Sub
