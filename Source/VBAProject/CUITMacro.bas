@@ -14,7 +14,7 @@ Public otherTeacherTitle As String
 Public mathTypeFound As Boolean
 Public axMathFound As Boolean
 
-Const Version = "v1.4.2"
+Const Version = "v1.4.3"
 
 Const TEXT_GithubUrl = "https://github.com/sk8boy/cuit_dissertation_template"
 Const TEXT_GiteeUrl = "https://gitee.com/tiejunwang/cuit_dissertation_template"
@@ -4281,7 +4281,6 @@ Public Sub CheckUpdate_RibbonFun(ByVal control As IRibbonControl)
     
 ERROR_HANDLER:
     ShowErrorMsg Err, "检查模板更新时出错: "
-    If Not (ur Is Nothing) Then ur.EndCustomRecord
 End Sub
 
 ' 从JSON响应中提取版本号
@@ -4355,3 +4354,113 @@ Private Sub ShowErrorMsg(err As ErrObject, msg As String)
         MsgBox msg & vbCrLf & vbCrLf & err.Description, vbCritical, C_TITLE
     End If
 End Sub
+
+Public Sub ChangeTemplate_RibbonFun(ByVal control As IRibbonControl)
+    Dim fd As FileDialog
+    Dim chosenFile As String
+    Dim filePath As String
+    Dim newVersion As String
+    Dim changeFile As Boolean
+    Dim ur As UndoRecord
+    
+    On Error GoTo ERROR_HANDLER
+    Set ur = Application.UndoRecord
+    ur.StartCustomRecord "替换论文模板"
+    changeFile = True
+    
+    ' 1. 创建并初始化一个“打开文件”对话框
+    Set fd = Application.FileDialog(msoFileDialogOpen)
+    With fd
+        ' 2. 设置对话框属性
+        .title = "请选择新的模板文件" ' 设置对话框标题
+        .InitialFileName = Environ("USERPROFILE") & "\Documents\" ' 设置初始路径
+        .AllowMultiSelect = False ' 设置为False，只允许选择单个文件
+        
+        ' 3. 清除现有过滤器并添加新的
+        .Filters.Clear
+        .Filters.Add "Template Files", "*.dot; *.dotm"
+        .Filters.Add "All Files", "*.*"
+        
+        ' 4. 显示对话框 (-1 为成功点击打开，0 为取消)
+        If .Show = -1 Then
+            ' 5. 获取用户选择的第一个（也是唯一一个）文件的完整路径
+            filePath = .SelectedItems(1)
+            
+            newVersion = ExtractVersionFromFilePath(filePath)
+            
+            If newVersion = "" Or CompareVersions(newVersion, Version) <= 0 Then
+                Dim userChoice As VbMsgBoxResult
+                userChoice = MsgBox("警告：文件 " & filePath & " 中不包含任何版本信息或不是更高版本的模板。" & vbCrLf & _
+                           "确认继续替换成该模板文件？", vbQuestion, "确认替换模板文件")
+                
+                If Not userChoice = vbYes Then
+                    changeFile = False
+                End If
+            End If
+            
+            If changeFile Then
+                With ActiveDocument
+                    .UpdateStylesOnOpen = False
+                    .AttachedTemplate = filePath
+                End With
+    
+                MsgBox "已更新本文档使用的模板: " & vbNewLine & filePath, vbInformation
+            End If
+        End If
+    End With
+    
+    ' 6. 释放对象
+    Set fd = Nothing
+
+    Application.ScreenRefresh
+    ur.EndCustomRecord
+    Exit Sub ' 正常退出点，避免进入错误处理程序
+    
+ERROR_HANDLER:
+    ShowErrorMsg err, "替换论文模板时发生错误: "
+    If Not (ur Is Nothing) Then ur.EndCustomRecord
+End Sub
+
+Private Function ExtractVersionFromFilePath(filePath As String) As String
+    Dim fileName As String
+    Dim vPosition As Long
+    Dim startPos As Long
+    Dim i As Long
+    Dim versionString As String
+    Dim currentChar As String
+    
+    ' 1. 从完整路径中提取文件名（不含路径和扩展名）
+    fileName = Mid(filePath, InStrRev(filePath, "\") + 1) ' 获取带扩展名的文件名
+    fileName = Left(fileName, InStrRev(fileName, ".") - 1) ' 去除扩展名
+    
+    ' 2. 查找 "v" 或 "V" 的位置（不区分大小写）
+    vPosition = InStr(1, fileName, "v", vbTextCompare)
+    If vPosition = 0 Then
+        ExtractVersion = "未找到版本信息"
+        Exit Function
+    End If
+    
+    ' 3. 设置版本信息开始位置（v字母之后）
+    startPos = vPosition + 1
+    versionString = ""
+    
+    ' 4. 从v后面开始遍历字符，直到遇到非版本字符（非数字、非点号）
+    For i = startPos To Len(fileName)
+        currentChar = Mid(fileName, i, 1)
+        
+        ' 如果是数字或点号，则认为是版本号的一部分
+        If IsNumeric(currentChar) Or currentChar = "." Then
+            versionString = versionString & currentChar
+        ' 遇到其他非版本字符则停止
+        Else
+            Exit For
+        End If
+    Next i
+    
+    ' 5. 返回结果
+    If versionString = "" Then
+        ExtractVersion = ""
+    Else
+        ExtractVersion = versionString
+    End If
+End Function

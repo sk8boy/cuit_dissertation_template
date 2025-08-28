@@ -88,7 +88,8 @@
                 <group id="RestoreTemplate" label="模板相关" autoScale="true">
                     <button id="btnRestTemplate" label="模板检查恢复" imageMso="AccessThemesGallery" size="large" 
                     onAction="RestoreSettings_RibbonFun" screentip="恢复所有样式" supertip="当原始文档中的样式被修改或删除时，通过该功能进行恢复。" />
-                    
+                    <button id="btnChangeTemplate" label="替换论文模板" imageMso="FileServerTransferDatabase" size="large" 
+                    onAction="ChangeTemplate_RibbonFun" screentip="替换论文模板" supertip="下载最新版本论文模板后，通过选择最新模板文件完成替换。" />                    
                     <button id="CheckUpdate_Button" label="检查更新" size="normal" imageMso="Refresh"
                     onAction="CheckUpdate_RibbonFun" />
                     <gallery id="GetLatestVersion_Gallery" size="normal" imageMso="ProductUpdates" label="获取更新">
