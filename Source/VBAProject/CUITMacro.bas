@@ -14,7 +14,7 @@ Public otherTeacherTitle As String
 Public mathTypeFound As Boolean
 Public axMathFound As Boolean
 
-Const Version = "v1.4.4"
+Const Version = "v1.4.5"
 
 Const TEXT_GithubUrl = "https://github.com/sk8boy/cuit_dissertation_template"
 Const TEXT_GiteeUrl = "https://gitee.com/tiejunwang/cuit_dissertation_template"
@@ -4017,7 +4017,7 @@ errHandle:
     End If
 End Sub
 
-' 在选中段落或整个文档中，删除中英文字符间、段落开始前、段落结束后、中文标点前后的空格（不会删除英文间的空格）
+' 在选中段落或整个文档中，删除中文字符间、中英文字符间、段落开始前、段落结束后、中文标点前后的空格（不会删除英文间的空格）
 Public Sub RemoveSpaces_RibbonFun(ByVal control As IRibbonControl)
     Dim myRange As Range
     Dim response As VbMsgBoxResult
@@ -4034,21 +4034,38 @@ Public Sub RemoveSpaces_RibbonFun(ByVal control As IRibbonControl)
     Else
         ' 如果没有选中文本，在整个文档操作
         Set myRange = ActiveDocument.Content
-        Response = MsgBox("没有选中文本，将在整个文档中清理空格。" & vbCrLf & _
+        response = MsgBox("没有选中文本，将在整个文档中清理空格。" & vbCrLf & _
                          "是否继续？", vbQuestion + vbYesNoCancel, "确认继续操作")
         ' 检查用户选择
-        If Response = vbCancel Or Response = vbNo Then
+        If response = vbCancel Or response = vbNo Then
             ur.EndCustomRecord
             Exit Sub
         End If
     End If
 
+    ' 删除中文文本中文字符间的空格
+    With myRange.Find
+        .ClearFormatting
+        .replacement.ClearFormatting
+        .text = "([一-?，。、？！：；（）《》—「」…￥〈〉“”‘’【】])([ ]@)([一-?，。、？！：；（）《》—「」…￥〈〉“”‘’【】])"  ' 中文字符+空格+中文字符
+        .replacement.text = "\1\3"  ' 删除空格
+        .Forward = True
+        .Wrap = wdFindContinue
+        .Format = False
+        .MatchCase = False
+        .MatchWholeWord = False
+        .MatchWildcards = True
+        .MatchSoundsLike = False
+        .MatchAllWordForms = False
+        .Execute Replace:=wdReplaceAll
+    End With
+
     ' 删除中文文本中英文单词间的空格（中英文混排时）
     With myRange.Find
         .ClearFormatting
-        .Replacement.ClearFormatting
-        .Text = "([!一-龠 ，。！？；：（）【】《》、“”‘’])([ ]@)([一-龠，。！？；：“”‘’（）【】《》、])"  ' 非中文字母字符+空格+中文字符
-        .Replacement.Text = "\1\3"  ' 删除空格
+        .replacement.ClearFormatting
+        .text = "([!一-?，。、？！：；（）《》—「」…￥〈〉“”‘’【】])([ ]@)([一-?，。、？！：；（）《》—「」…￥〈〉“”‘’【】])"  ' 非中文字母字符+空格+中文字符
+        .replacement.text = "\1\3"  ' 删除空格
         .Forward = True
         .Wrap = wdFindContinue
         .Format = False
@@ -4062,9 +4079,9 @@ Public Sub RemoveSpaces_RibbonFun(ByVal control As IRibbonControl)
     
     With myRange.Find
         .ClearFormatting
-        .Replacement.ClearFormatting
-        .Text = "([一-龠，。！？；：（）【】《》、“”‘’])([ ]@)([!一-龠 ，。！？；：“”‘’（）【】《》、])"  ' 中文字符+空格+非中文字母字符
-        .Replacement.Text = "\1\3"  ' 删除空格
+        .replacement.ClearFormatting
+        .text = "([一-?，。、？！：；（）《》—「」…￥〈〉“”‘’【】])([ ]@)([!一-?，。、？！：；（）《》—「」…￥〈〉“”‘’【】])"  ' 中文字符+空格+非中文字母字符
+        .replacement.text = "\1\3"  ' 删除空格
         .Forward = True
         .Wrap = wdFindContinue
         .Format = False
@@ -4077,45 +4094,45 @@ Public Sub RemoveSpaces_RibbonFun(ByVal control As IRibbonControl)
     End With
     
     ' 删除中文标点符号前的空格
-    With myRange.Find
-        .ClearFormatting
-        .Replacement.ClearFormatting
-        .Text = "([ ]@)([，。！？；：（）【】《》、“”‘’])"  ' 空格+中文标点
-        .Replacement.Text = "\2"  ' 删除空格
-        .Forward = True
-        .Wrap = wdFindContinue
-        .Format = False
-        .MatchCase = False
-        .MatchWholeWord = False
-        .MatchWildcards = True
-        .MatchSoundsLike = False
-        .MatchAllWordForms = False
-        .Execute Replace:=wdReplaceAll
+    ' With myRange.Find
+    '     .ClearFormatting
+    '     .replacement.ClearFormatting
+    '     .text = "([ ]@)([，。、？！：；（）《》—「」…￥〈〉“”‘’【】])"  ' 空格+中文标点
+    '     .replacement.text = "\2"  ' 删除空格
+    '     .Forward = True
+    '     .Wrap = wdFindContinue
+    '     .Format = False
+    '     .MatchCase = False
+    '     .MatchWholeWord = False
+    '     .MatchWildcards = True
+    '     .MatchSoundsLike = False
+    '     .MatchAllWordForms = False
+    '     .Execute Replace:=wdReplaceAll
     End With
     
     ' 删除中文标点符号后的空格（除了某些英文标点后可能需要空格的情况）
-    With myRange.Find
-        .ClearFormatting
-        .Replacement.ClearFormatting
-        .Text = "([，。！？；：（）【】《》、“”‘’])([ ]@)"  ' 中文标点+空格
-        .Replacement.Text = "\1"  ' 删除空格
-        .Forward = True
-        .Wrap = wdFindContinue
-        .Format = False
-        .MatchCase = False
-        .MatchWholeWord = False
-        .MatchWildcards = True
-        .MatchSoundsLike = False
-        .MatchAllWordForms = False
-        .Execute Replace:=wdReplaceAll
-    End With
+    ' With myRange.Find
+    '     .ClearFormatting
+    '     .replacement.ClearFormatting
+    '     .text = "([，。、？！：；（）《》—「」…￥〈〉“”‘’【】])([ ]@)"  ' 中文标点+空格
+    '     .replacement.text = "\1"  ' 删除空格
+    '     .Forward = True
+    '     .Wrap = wdFindContinue
+    '     .Format = False
+    '     .MatchCase = False
+    '     .MatchWholeWord = False
+    '     .MatchWildcards = True
+    '     .MatchSoundsLike = False
+    '     .MatchAllWordForms = False
+    '     .Execute Replace:=wdReplaceAll
+    ' End With
     
     ' 删除行首空格
     With myRange.Find
         .ClearFormatting
-        .Replacement.ClearFormatting
-        .Text = "^13[ ]@"  ' 段落标记后的空格
-        .Replacement.Text = "^13"  ' 只保留段落标记
+        .replacement.ClearFormatting
+        .text = "^13[ ]@"  ' 段落标记后的空格
+        .replacement.text = "^13"  ' 只保留段落标记
         .Forward = True
         .Wrap = wdFindContinue
         .Format = False
@@ -4130,9 +4147,9 @@ Public Sub RemoveSpaces_RibbonFun(ByVal control As IRibbonControl)
     ' 删除行尾空格
     With myRange.Find
         .ClearFormatting
-        .Replacement.ClearFormatting
-        .Text = "[ ]@^13"  ' 空格+段落标记
-        .Replacement.Text = "^13"  ' 只保留段落标记
+        .replacement.ClearFormatting
+        .text = "[ ]@^13"  ' 空格+段落标记
+        .replacement.text = "^13"  ' 只保留段落标记
         .Forward = True
         .Wrap = wdFindContinue
         .Format = False
@@ -4147,9 +4164,9 @@ Public Sub RemoveSpaces_RibbonFun(ByVal control As IRibbonControl)
         ' 删除行首空格
     With myRange.Find
         .ClearFormatting
-        .Replacement.ClearFormatting
-        .Text = "^l[ ]@"  ' 段落标记后的空格
-        .Replacement.Text = "^l"  ' 只保留段落标记
+        .replacement.ClearFormatting
+        .text = "^l[ ]@"  ' 段落标记后的空格
+        .replacement.text = "^l"  ' 只保留段落标记
         .Forward = True
         .Wrap = wdFindContinue
         .Format = False
@@ -4164,9 +4181,9 @@ Public Sub RemoveSpaces_RibbonFun(ByVal control As IRibbonControl)
     ' 删除行尾空格
     With myRange.Find
         .ClearFormatting
-        .Replacement.ClearFormatting
-        .Text = "[ ]@^l"  ' 空格+段落标记
-        .Replacement.Text = "^l"  ' 只保留段落标记
+        .replacement.ClearFormatting
+        .text = "[ ]@^l"  ' 空格+段落标记
+        .replacement.text = "^l"  ' 只保留段落标记
         .Forward = True
         .Wrap = wdFindContinue
         .Format = False
@@ -4184,7 +4201,7 @@ Public Sub RemoveSpaces_RibbonFun(ByVal control As IRibbonControl)
     Exit Sub ' 正常退出点，避免进入错误处理程序
     
 ERROR_HANDLER:
-    ShowErrorMsg Err, "删除多余空格时发生错误: "
+    ShowErrorMsg err, "删除多余空格时发生错误: "
     If Not (ur Is Nothing) Then ur.EndCustomRecord
 End Sub
 
