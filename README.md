@@ -320,6 +320,31 @@
 
 **注意：** 在使用 Office RibbonX Editor 打开 Word 模板时，首先需求确保该模板没有被 Word 或 WPS 打开，如果打开了请先关闭；其次，首次使用 Office RibbonX Editor 打开模板前，需要使用 Word 对该模板进行编辑并保存一次，方能正确查看其中的内容。
 
+### 搭建开发环境遇到的问题
+
+如果重新搭建一个全新的开发环境，可能会遇到一些问题。
+
+1. Pycharm 中无法运行 makeVBAProjectFile.py
+
+    这个通常是因为本地安装的 Python 版本和代码库中虚拟环境（.venv）中的版本不一致导致的。可以删除工程中的 .venv 目录，根据本地 Python 重新生成一个新的虚拟环境即可解决问题。
+
+2. 运行 makeVBAProjectFile.py 时报错 “'Microsoft Word', '到 Visual Basic Project 的程序访问不被信任。”
+
+    这个通常是因为 Word 的安全设置阻止了对VBA项目的访问。可以通过如下步骤解决：
+        - 打开Word应用程序
+
+        - 点击 文件 → 选项
+
+        - 选择 信任中心 → 信任中心设置
+
+        - 选择 宏设置
+
+        - 勾选 "信任对VBA工程对象模型的访问"
+
+        - 点击 确定 保存设置
+
+    如 ![下图](Documents/Images/FixProbVBNotTrusted.png) 所示。
+
 ## 致谢
 
 本模版的开发灵感来源于 [Springer](https://www.springer.com/gp/computer-science/lncs/conference-proceedings-guidelines) 发布的会议论文模板 [Microsoft Word Proceedings Templates](https://resource-cms.springernature.com/springer-cms/rest/v1/content/19238706/data/v5) ，使得我从中了解并开始学习如何在 Word 中加入自定义的 Ribbon 选项卡，以及如何基于 VBA 制作 Word 模板的宝贵经验。

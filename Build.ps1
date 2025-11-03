@@ -112,7 +112,7 @@ if (Test-Path $vbaPath) {
 
     # 3.2 调用 Python 提取 vbaProject.bin
     $vbaProjectFile = Join-Path $vbaPath "vbaProject.bin"
-    python $pyScript
+    ./.venv/Scripts/python.exe $pyScript
     if (($LASTEXITCODE -eq 0) -and (Test-Path $vbaProjectFile)) {
         Write-Host "提取成功 -> $vbaProjectFile"
     }
